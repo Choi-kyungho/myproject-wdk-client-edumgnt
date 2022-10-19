@@ -20,5 +20,5 @@
 		"declaration": true
 	},
 	"include": ["src"],
-	
+	"typeRoots":["src/types"],
 }

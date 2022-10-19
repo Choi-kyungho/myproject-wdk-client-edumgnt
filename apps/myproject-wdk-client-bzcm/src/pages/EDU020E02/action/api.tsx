@@ -31,5 +31,25 @@
       };
       return this.httpRequest(config);
     };
+
+    retrieve3 = async (searchValue) => {
+      const config = {
+        url: "/api/bzcm/EDU020E02/byEmpEduRankList/",
+        params: {
+          p_use_yn: 'Y'
+        },
+      };
+      return this.httpRequest(config);
+    };
+
+    retrieve4 = async (searchValue) => {
+      const config = {
+        url: "/api/bzcm/EDU020E02/byDeptEduRankList/",
+        params: {
+          p_use_yn: 'Y'
+        },
+      };
+      return this.httpRequest(config);
+    };
     
   }

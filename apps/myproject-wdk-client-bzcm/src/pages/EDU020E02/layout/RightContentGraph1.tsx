@@ -6,8 +6,8 @@ type PropsType ={
     data:any
 }
 
-// 연도별 교육현황
-const LeftContentGraph = ({ data }: PropsType )  => {
+// 부서별 교육현황
+const RightContentGraph1 = ({ data }: PropsType )  => {
     const handle = {
         barClick: (data: any) => {
             console.log(data);
@@ -22,12 +22,14 @@ const LeftContentGraph = ({ data }: PropsType )  => {
         
         // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정
 
-        <div style={{ width: '100%', height: '600px'}}>
-            <div style={{ float:'left', marginTop:'10px', paddingRight:'5px'}}><FcBarChart size={24}></FcBarChart></div>
-            <div style={{ float:'left'}}> <h4> 연도별교육현황</h4></div>
-            <div style={{color: 'grey', marginLeft:'40px'}}>
-                <h6 style={{ paddingTop: '46px'}}>- 최근 3개년 추이</h6>
-             </div>
+        <div style={{ width: '500px', height: '330px'}}>
+            <div style={{float: 'left', paddingTop: '5px', paddingRight: '5px'}}>
+                <FcBarChart size={15}></FcBarChart>
+            </div>
+            <div style={{float: 'left'}}>
+                <p style={{fontSize: '14px'}}> 부서별교육현황</p>
+                <p style={{fontSize: '12px', color: 'grey'}}> - 전체 부서별 계획/실적</p>
+            </div>
             <ResponsiveBar
                 /**
                  * chart에 사용될 데이터
@@ -40,11 +42,11 @@ const LeftContentGraph = ({ data }: PropsType )  => {
                 /**
                  * keys들을 그룹화하는 index key (분류하는 값)
                  */
-                indexBy="연도"
+                indexBy="부서"
                 /**
                  * chart margin
                  */
-                margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+                margin={{ top: 25, right: 130, bottom: 50, left: 60 }}
                 /**
                  * chart padding (bar간 간격)
                  */
@@ -65,7 +67,7 @@ const LeftContentGraph = ({ data }: PropsType )  => {
                      */
                     labels: {
                         text: {
-                            fontSize: 14,
+                            fontSize: 10,
                             fill: '#000000',
                         },
                     },
@@ -74,7 +76,7 @@ const LeftContentGraph = ({ data }: PropsType )  => {
                      */
                     legends: {
                         text: {
-                            fontSize: 12,
+                            fontSize: 10,
                             fill: '#000000',
                         },
                     },
@@ -84,7 +86,7 @@ const LeftContentGraph = ({ data }: PropsType )  => {
                          */
                         legend: {
                             text: {
-                                fontSize: 20,
+                                fontSize: 10,
                                 fill: '#000000',
                             },
                         },
@@ -93,7 +95,7 @@ const LeftContentGraph = ({ data }: PropsType )  => {
                          */
                         ticks: {
                             text: {
-                                fontSize: 16,
+                                fontSize: 10,
                                 fill: '#000000',
                             },
                         },
@@ -156,7 +158,7 @@ const LeftContentGraph = ({ data }: PropsType )  => {
                                 on: 'hover',
                                 style: {
                                     itemOpacity: 1,
-                                },
+                                },     
                             },
                         ],
                         onClick: handle.legendClick, // legend 클릭 이벤트
@@ -167,4 +169,4 @@ const LeftContentGraph = ({ data }: PropsType )  => {
     );
 };
 
-export default LeftContentGraph;
+export default RightContentGraph1;

@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { ResponsiveBar } from '@nivo/bar';
-import { FcBarChart } from "react-icons/fc";;
+import { FcBarChart } from "react-icons/fc";
 
 type PropsType ={
     data:any
 }
 
-// 부서별 교육현황
-const RightContentGraph = ({ data }: PropsType )  => {
+// 연도별 교육현황
+const LeftContentGraph1 = ({ data }: PropsType )  => {
+    console.log("LeftContentGraph1====>"+JSON.stringify(data));
     const handle = {
         barClick: (data: any) => {
             console.log(data);
@@ -19,15 +20,15 @@ const RightContentGraph = ({ data }: PropsType )  => {
     };
 
     return (
-        
         // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정
-
-        <div style={{ width: '100%', height: '600px'}}>
-            <div style={{ float:'left', marginTop:'10px', paddingRight:'5px'}}><FcBarChart size={24}></FcBarChart></div>
-            <div style={{ float:'left'}}> <h4> 부서별교육현황</h4></div>
-            <div style={{color: 'grey', marginLeft:'40px'}}>
-                <h6 style={{ paddingTop: '46px'}}>- 전체 부서별 계획/실적</h6>
-             </div>
+        <div style={{ width: '500px', height: '330px'}}>
+            <div style={{float: 'left', paddingTop: '5px', paddingRight: '5px'}}>
+                <FcBarChart size={15}></FcBarChart>
+            </div>
+            <div style={{float: 'left'}}>
+                <p style={{fontSize: '14px'}}> 연도별교육현황</p>
+                <p style={{fontSize: '12px', color: 'grey'}}> - 최근 3개년 추이</p>
+            </div>
             <ResponsiveBar
                 /**
                  * chart에 사용될 데이터
@@ -40,11 +41,11 @@ const RightContentGraph = ({ data }: PropsType )  => {
                 /**
                  * keys들을 그룹화하는 index key (분류하는 값)
                  */
-                indexBy="부서"
+                indexBy="연도"
                 /**
                  * chart margin
                  */
-                margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+                margin={{ top: 25, right: 130, bottom: 50, left: 60 }}
                 /**
                  * chart padding (bar간 간격)
                  */
@@ -65,7 +66,7 @@ const RightContentGraph = ({ data }: PropsType )  => {
                      */
                     labels: {
                         text: {
-                            fontSize: 14,
+                            fontSize: 10,
                             fill: '#000000',
                         },
                     },
@@ -74,7 +75,7 @@ const RightContentGraph = ({ data }: PropsType )  => {
                      */
                     legends: {
                         text: {
-                            fontSize: 12,
+                            fontSize: 10,
                             fill: '#000000',
                         },
                     },
@@ -84,7 +85,7 @@ const RightContentGraph = ({ data }: PropsType )  => {
                          */
                         legend: {
                             text: {
-                                fontSize: 20,
+                                fontSize: 10,
                                 fill: '#000000',
                             },
                         },
@@ -93,7 +94,7 @@ const RightContentGraph = ({ data }: PropsType )  => {
                          */
                         ticks: {
                             text: {
-                                fontSize: 16,
+                                fontSize: 10,
                                 fill: '#000000',
                             },
                         },
@@ -167,4 +168,4 @@ const RightContentGraph = ({ data }: PropsType )  => {
     );
 };
 
-export default RightContentGraph;
+export default LeftContentGraph1;

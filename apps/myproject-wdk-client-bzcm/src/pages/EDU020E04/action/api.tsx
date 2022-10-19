@@ -12,9 +12,9 @@
     /*
     * 마스터 그리드 조회 Api Call
     */
-    retrieve = async (searchValue) => {
+    retrieve1 = async (searchValue) => {
       const config = {
-        url: "/api/bzcm/EDU020E04/byEmpEduRankList/",
+        url: "/api/bzcm/EDU020E04/byYearEduCostList/",
         params: {
           p_use_yn: 'Y'
         },
@@ -24,7 +24,17 @@
 
     retrieve2 = async (searchValue) => {
       const config = {
-        url: "/api/bzcm/EDU020E04/byDeptEduRankList/",
+        url: "/api/bzcm/EDU020E04/byDeptEduCostList/",
+        params: {
+          p_use_yn: 'Y'
+        },
+      };
+      return this.httpRequest(config);
+    };
+
+    retrieve3 = async (searchValue) => {
+      const config = {
+        url: "/api/bzcm/EDU020E04/byEmpEduCostList/",
         params: {
           p_use_yn: 'Y'
         },

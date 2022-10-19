@@ -38,6 +38,14 @@ module.exports = (env, argv) => {
     module: {
       rules: [
         {
+          test: /\.(png|jpe?g|gif)$/,
+          use: [
+            {
+              loader: 'file-loader',
+            },
+          ],
+        },
+        {
           test: /\.m?js$/,
           type: 'javascript/auto',
           resolve: {
