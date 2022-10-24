@@ -1,4 +1,4 @@
-import { IResData, Title, useSyncHttpCient } from '@vntgcorp/vntg-wdk-client';
+import { IResData, Title, useSyncHttpCient, Notify } from '@vntgcorp/vntg-wdk-client';
 import React, { useRef, useState, useEffect } from 'react'
 import { ResponsivePie } from '@nivo/pie';
 import styled from 'styled-components';
@@ -7,8 +7,9 @@ import LeftContentGraph1 from './layout/LeftContentGraph1';
 import RightContentGraph1 from './layout/RightContentGraph1';
 import LeftContentGraph2 from './layout/LeftContentGraph2';
 import RightContentGraph2 from './layout/RightContentGraph2';
+import SearchForm from './layout/SearchForm';
 import {
-    Card,
+    Card,   
   } from "@material-ui/core";
     /* 
     화면 스타일 선언 */
@@ -51,9 +52,11 @@ const EDU020E02 = () => {
     const [byDeptEduTime, setbyDeptEduTime] = useState([]);
     const [byEmpEduRankTime, setbyEmpEduRankTime] = useState([]);
     const [byDeptEduRankTime, setbyDeptEduRankTime] = useState([]);
+    const searchFormRef = useRef<any>(null);
 
-    React.useEffect(()=>{
-      const searchValue = 'N'
+    const onRetrive = () => {
+      // 현재 조회파라미터들을 searchValue 변수에 담아서 조회함수에 파라미터로 전달
+      const searchValue = searchFormRef.current.submit();
 
       // 연도별 교육현황
       apiCall.retrieve(searchValue).then(response=>{
@@ -72,10 +75,45 @@ const EDU020E02 = () => {
       apiCall.retrieve4(searchValue).then(response=>{
         setbyDeptEduRankTime(response.data);
       });
-    },[])
+    };
+
+    useEffect(() => {
+      onRetrive();
+    }, []);
+    // React.useEffect(()=>{
+    //   const searchValue = SearchFormRef.current.submit();
+    //   // 연도별 교육현황
+    //   apiCall.retrieve(searchValue).then(response=>{
+    //     setbyYearEduTime(response.data);
+    //   });
+
+    //   apiCall.retrieve2(searchValue).then(response=>{
+    //     setbyDeptEduTime(response.data);
+    //   });
+
+    //   // 개인별,부서별 교육현황
+    //   apiCall.retrieve3(searchValue).then(response=>{
+    //     setbyEmpEduRankTime(response.data);
+    //   });
+
+    //   apiCall.retrieve4(searchValue).then(response=>{
+    //     setbyDeptEduRankTime(response.data);
+    //   });
+    // },[])
+
+       
+
+    const onCleanup = () => {
+      searchFormRef.current.cleanup();
+    };
+
+    const onChangeEduYear = () => {
+      onRetrive();
+    };
 
     return <>
-      <Title useCleanup={false} useRetrive={false} useSave={false}></Title>
+      <Title onCleanup={onCleanup} useSave={false} onRetrive={onRetrive}></Title>
+        <SearchForm ref={searchFormRef} onChangeEduYear={onChangeEduYear}></SearchForm>
       <MainContent>
       <LeftContent1>
         <Card style={{width: '480px', height: '380px', paddingTop: '10px', paddingLeft: '15px'}}>

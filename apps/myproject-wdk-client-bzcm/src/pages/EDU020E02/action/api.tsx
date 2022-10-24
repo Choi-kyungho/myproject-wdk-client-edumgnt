@@ -16,7 +16,8 @@
       const config = {
         url: "/api/bzcm/EDU020E02/byYearEduList/",
         params: {
-          p_use_yn: 'Y'
+          p_use_yn: 'Y',
+          p_edu_year:searchValue.EDU_YEAR
         },
       };
       return this.httpRequest(config);
@@ -26,7 +27,8 @@
       const config = {
         url: "/api/bzcm/EDU020E02/byDeptEduList/",
         params: {
-          p_use_yn: 'Y'
+          p_use_yn: 'Y',
+          p_edu_year:searchValue.EDU_YEAR
         },
       };
       return this.httpRequest(config);
@@ -36,7 +38,8 @@
       const config = {
         url: "/api/bzcm/EDU020E02/byEmpEduRankList/",
         params: {
-          p_use_yn: 'Y'
+          p_use_yn: 'Y',
+          p_edu_year:searchValue.EDU_YEAR
         },
       };
       return this.httpRequest(config);
@@ -46,7 +49,8 @@
       const config = {
         url: "/api/bzcm/EDU020E02/byDeptEduRankList/",
         params: {
-          p_use_yn: 'Y'
+          p_use_yn: 'Y',
+          p_edu_year:searchValue.EDU_YEAR
         },
       };
       return this.httpRequest(config);

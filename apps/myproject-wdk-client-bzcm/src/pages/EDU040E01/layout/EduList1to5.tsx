@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { FcNext } from "react-icons/fc";
+import { FaMedal } from "react-icons/fa";
 import { GiMoneyStack } from "react-icons/gi";
 import { AiOutlineComment } from "react-icons/ai";
 import { AiOutlineUser } from "react-icons/ai";
@@ -27,31 +28,38 @@ const EduList1to5=({ data }: PropsType )=>{
       setEdudata(data)
     },[data])
     
-    return (
+    return (    
     <div className="eduNameList">
       {eduData && eduData.map((eduData) =>(
         <>  
-          <Card elevation={5}>
-            <div style={{paddingLeft: '15px', paddingTop: '5px'}}><h4>{eduData.seq}위</h4></div>
-            <CardHeader title={eduData.eduName}/>
-            <CardContent>
-              <div style={{float: 'left', paddingBottom: '15px'}}>
-                <Typography variant="body1" component="p">
-                  <AiOutlineUser></AiOutlineUser> &nbsp; <b> {eduData.eduAuthor}</b><br/>  
-                  <GiMoneyStack></GiMoneyStack> &nbsp; <b> {eduData.eduCost}</b><br/>
-                  <AiOutlineComment></AiOutlineComment> &nbsp; <b> {eduData.eduReview}</b><br/>
-                </Typography>
-              </div>
-              <div style={{float: 'right'}}>
-                <CardActions style={{float: 'right', paddingRight: '15px'}}>
-                  <Button onClick={() => window.open(eduData.eduLink, '_blank')} variant="contained" color="primary">
-                    교육 바로가기
-                  </Button>
-                </CardActions>
-              </div>
-            </CardContent>
+          <Card style={{width:'350px', float:'left', marginLeft: '30px', height:'250px'
+             ,boxShadow: '5px 5px 1px -1px rgb(0 0 0 / 20%), 1px 1px 0px 2px rgb(0 0 0 / 14%), 1px 1px 3px 0px rgb(0 0 0 / 12%)'}}>
+            <div style={{paddingLeft: '15px', paddingTop: '20px'}}>
+              <p style={{fontSize:'25px', float:'left', paddingTop:'8px'}}>
+                <div style={eduData.seq == 1 ? {color:'gold', float:'left'} 
+                          : eduData.seq == 2 ? {color:'silver', float:'left'} 
+                                             : {color:'#A47C6D', float:'left'}}>
+                  <FaMedal></FaMedal></div>
+                <div style={{float: 'left'}}><b style={{marginLeft:'5px'}}>{eduData.seq}위</b></div>
+              </p>
+            </div>
+            <div style={{fontSize:'14px', paddingTop:'45px', color:'#464646', textAlign:'center', fontWeight:'600', height:'100px'}}>
+              {eduData.eduName}
+            </div>
+            <div style={{float: 'left', marginTop:'10px', textAlign:'left', paddingLeft:'15px'}}>
+              <AiOutlineUser></AiOutlineUser> &nbsp; {eduData.eduAuthor}<br/> 
+            </div>
+            <div style={{marginTop:'40px', textAlign:'left', paddingLeft:'15px', marginBottom:'10px'}}>
+              <GiMoneyStack></GiMoneyStack> &nbsp; {eduData.eduCost}<br/>
+            </div>
+            <div style={{textAlign:'center', marginTop:'0px'}}>
+              <CardActions style={{display:'block', marginBottom:'10px'}}>
+                <Button onClick={() => window.open(eduData.eduLink, '_blank')} variant="contained" color="primary">
+                  바로가기
+                </Button>
+              </CardActions>
+            </div>
           </Card>
-          <br/><br/>
         </>
       ))}
     </div>

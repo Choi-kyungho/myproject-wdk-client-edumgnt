@@ -50,12 +50,12 @@ const EduList=({data})=>{
     },[eduNameList,eduCostList,eduAuthorList,eduReviewList,eduLinkList])
 
     return (
-    <div className="eduNameList">
-        <li>{users[0].username}</li>
-        <li>{eduCost}</li>
-        <li>{eduAuthor}</li>
-        <li>{eduReview}</li>
-        <li>{eduLink}</li>
+    <div className="eduNameList" style={{color:'grey'}}>
+        <li style={{color:'grey'}}>{users[0].username}</li>
+        <li style={{color:'grey'}}>{eduCost}</li>
+        <li style={{color:'#464646'}}>{eduAuthor}</li>
+        <li style={{color:'#464646'}}>{eduReview}</li>
+        <li style={{color:'#464646'}}>{eduLink}</li>
     </div>
     );
 };

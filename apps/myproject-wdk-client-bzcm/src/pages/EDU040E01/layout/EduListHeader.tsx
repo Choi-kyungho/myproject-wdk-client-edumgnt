@@ -39,9 +39,9 @@ const EduListHeader = (props) => {
   return (   
     <React.Fragment>
       <div>
-        <Typography variant="h5" className={classes.typography}>
-            <FcBullish size={24}></FcBullish> {props.title} 
-            <img src={logo} style={{paddingTop:'15px'}}></img>
+        <Typography variant="h4" className={classes.typography}>
+            <FcBullish size={30}></FcBullish> {props.title} 
+            <img src={logo} style={{paddingTop:'15px', width:'150px', height:'50px'}}></img>
         </Typography>
       </div>
       <div className={classes.content}>

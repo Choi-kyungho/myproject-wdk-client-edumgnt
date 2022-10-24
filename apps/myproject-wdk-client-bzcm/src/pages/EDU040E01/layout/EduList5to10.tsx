@@ -28,18 +28,37 @@ const EduList5to10=({ data }: PropsType )=>{
     },[data])
     
     return (
-    <div className="eduNameList">
+    <div className="eduNameList" style={{marginTop:'220px'}}>
       {eduData && eduData.map((eduData) =>(
         <>  
-          <Card elevation={5}>
-            <div style={{paddingLeft: '15px', paddingTop: '5px'}}><h4>{eduData.seq}위</h4></div>
-            <CardHeader title={eduData.eduName}/>
+          <Card style={{ width:'90%', marginLeft:'53px', height: '100px',
+          boxShadow: 'rgb(0 0 0 / 20%) 1px 1px 1px 1px, rgb(0 0 0 / 14%) 1px 1px 0px 2px, rgb(0 0 0 / 12%) 1px 1px 3px 0px'
+          }}>
+          <div style={{paddingLeft: '15px', paddingTop: '10px', float:'left'}}>
+            <p style={{fontSize:'20px', float:'left', paddingTop:'8px'}}><b>{eduData.seq}위</b></p>
+          </div>
+          <div style={{fontSize:'14px', width: '430px',paddingTop:'40px', paddingLeft:'100px'
+                      , color:'#464646', float:'left', fontWeight:'600', height:'100px', textAlign:'left'}}>
+            {eduData.eduName}
+          </div>
+          <div style={{float:'left', paddingTop: '40px', paddingLeft: '100px', color:'#464646'}}>
+            <AiOutlineUser></AiOutlineUser> &nbsp; {eduData.eduAuthor}
+          </div>
+          <div style={{float:'left', paddingTop: '40px', paddingLeft: '50px', color:'#464646'}}>
+            <GiMoneyStack></GiMoneyStack> &nbsp; {eduData.eduCost}
+          </div>
+          <div style={{float:'right', paddingTop: '30px', paddingRight: '20px'}}>
+            <Button onClick={() => window.open(eduData.eduLink, '_blank')} variant="contained" color="primary">
+              바로가기
+            </Button>
+          </div>
+            {/* <CardHeader title={eduData.eduName} style={{color:'#464646', fontSize:'20px', fontWeight:'700', paddingBottom: '40px'}}/>
             <CardContent>
               <div style={{float: 'left', paddingBottom: '15px'}}>
                 <Typography variant="body1" component="p">
-                  <AiOutlineUser></AiOutlineUser> &nbsp; <b> {eduData.eduAuthor}</b><br/>  
-                  <GiMoneyStack></GiMoneyStack> &nbsp; <b> {eduData.eduCost}</b><br/>
-                  <AiOutlineComment></AiOutlineComment> &nbsp; <b> {eduData.eduReview}</b><br/>
+                  <AiOutlineUser></AiOutlineUser> &nbsp; {eduData.eduAuthor}<br/>  
+                  <GiMoneyStack></GiMoneyStack> &nbsp; {eduData.eduCost}<br/>
+                  <AiOutlineComment></AiOutlineComment> &nbsp; {eduData.eduReview}<br/>
                 </Typography>
               </div>
               <div style={{float: 'right'}}>
@@ -49,7 +68,7 @@ const EduList5to10=({ data }: PropsType )=>{
                   </Button>
                 </CardActions>
               </div>
-            </CardContent>
+            </CardContent> */}
           </Card>
           <br/><br/>
         </>
