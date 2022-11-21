@@ -5,7 +5,7 @@ import ApiCall from './action/api';
 import DetailForm from './layout/DetailForm';
 import MasterGrid from './layout/MasterGrid';
 import SearchForm from './layout/SearchForm';
-import { error, success } from '@vntgcorp/vntg-wdk-client';
+import { error, success, warning } from '@vntgcorp/vntg-wdk-client';
 import { ValidationError, ValidationLevel } from 'realgrid';
 
 /* 
@@ -87,60 +87,79 @@ const EDU010E01 = (props: Props) => {
     const saveData = masterGridRef.current.save();
 
     // 유효성 체크
-    // try {
-    //   // edu_name 필수 체크
-    //   const eduName = saveData[0].edu_name;
-    //   if (!eduName) {
-    //     throw new Error('[교육명] 필수 입력 사항입니다.');
-    //   }
+    try {
+      // edu_name 필수 체크
+      const eduName = saveData[0].edu_name;
+      if (!eduName) {
+        warning('[교육명] 필수 입력 사항입니다.');
+        return [];
+      }
 
-    //   // emp_no 필수 체크
-    //   const empNo = saveData[0].emp_no;
-    //   if (!empNo) {
-    //     throw new Error('[사원번호] 필수 입력 사항입니다.');
-    //   }
+      // edu_time
+      const eduTime = saveData[0].edu_time;
+      if (!eduTime) {
+        warning('[교육시간] 필수 입력 사항입니다.');
+        return [];
+      }
 
-    //   // edu_type 필수 체크
-    //   const eduType = saveData[0].edu_type;
-    //   if (!eduType) {
-    //     throw new Error('[교육형태] 필수 입력 사항입니다.');
-    //   }
+      // emp_no 필수 체크
+      const empNo = saveData[0].emp_no;
+      if (!empNo) {
+        warning('[사원번호] 필수 입력 사항입니다.');
+        return [];
+      }
 
-    //   // edu_large_class 필수 체크
-    //   const eduLargeClass = saveData[0].edu_large_class;
-    //   if (!eduLargeClass) {
-    //     throw new Error('[교육대분류] 필수 입력 사항입니다.');
-    //   }
+      // edu_type 필수 체크
+      const eduType = saveData[0].edu_type;
+      if (!eduType) {
+        warning('[교육형태] 필수 입력 사항입니다.');
+        return [];
+      }
 
-    //   // edu_middle_class 필수 체크
-    //   const eduMiddleClass = saveData[0].edu_middle_class;
-    //   if (!eduMiddleClass) {
-    //     throw new Error('[교육중분류] 필수 입력 사항입니다.');
-    //   }
+      // edu_large_class 필수 체크
+      const eduLargeClass = saveData[0].edu_large_class;
+      if (!eduLargeClass) {
+        warning('[교육대분류] 필수 입력 사항입니다.');
+        return [];
+      }
 
-    //   // edu_supervision 필수 체크
-    //   const eduSupervision = saveData[0].edu_supervision;
-    //   if (!eduSupervision) {
-    //     throw new Error('[교육주관] 필수 입력 사항입니다.');
-    //   }
+      // edu_middle_class 필수 체크
+      const eduMiddleClass = saveData[0].edu_middle_class;
+      if (!eduMiddleClass) {
+        warning('[교육중분류] 필수 입력 사항입니다.');
+        return [];
+      }
 
-    //   // edu_location 필수 체크
-    //   const eduLocation = saveData[0].edu_location;
-    //   if (!eduLocation) {
-    //     throw new Error('[교육장소] 필수 입력 사항입니다.');
-    //   }
+      // edu_supervision 필수 체크
+      const eduSupervision = saveData[0].edu_supervision;
+      if (!eduSupervision) {
+        warning('[교육주관] 필수 입력 사항입니다.');
+        return [];
+      }
 
-    //   // edu_cost 필수 체크
-    //   const eduCost = saveData[0].edu_cost;
-    //   if (!eduCost) {
-    //     throw new Error('[교육비] 필수 입력 사항입니다.');
-    //   }
-    // } catch (err) {
-    //   // error(err);
-    //   error.level = ValidationLevel.ERROR;
-    //   error.message = err;
-    //   return err;
-    // }
+      // edu_location 필수 체크
+      const eduLocation = saveData[0].edu_location;
+      if (!eduLocation) {
+        warning('[교육장소] 필수 입력 사항입니다.');
+        return [];
+      }
+
+      // edu_cost 필수 체크
+      const eduCost = saveData[0].edu_cost;
+      if (!eduCost) {
+        warning('[교육비] 필수 입력 사항입니다.');
+        return [];
+      }
+
+      // 마감여부 체크
+      const closeYn = saveData[0].close_yn;
+      if (closeYn == 'Y') {
+        warning('교육일정이 마감되었습니다. 수정/삭제 불가능합니다.');
+        return [];
+      }
+    } catch (err) {
+      error(err);
+    }
 
     // saveData는 api.ts에 있는 saveData 저장api함수
     // 저장 api함수 호출 후 조회함수 재호출
@@ -169,15 +188,19 @@ const EDU010E01 = (props: Props) => {
   };
 
   // 교육일정번호 Max값 가져오기
-  const onGetMaxEduSchedule = () => {
+  const onGetMaxEduSchedule = (searchValue) => {
     // 현재 조회파라미터들을 searchValue 변수에 담아서 조회함수에 파라미터로 전달
-    const searchValue = SearchFormRef.current.submit();
 
     apiCall.getMaxEduSchedule(searchValue).then((response) => {
       // 조회api 함수에서 받아온 데이터를 MasterGrid로 전달하기 위해 setMastergridData 훅에 담음
       // setMastergridData(response.data);
+      // console.log('index.tsx getMaxEduSchedule ===========>   ' + response.data[0].edu_schedule_no);
+      masterGridRef.current.changeData('edu_schedule_no', response.data[0].edu_schedule_no);
+      detailFormRef.current.setMaxEduScheduleNo({
+        edu_schedule_no: response.data[0].edu_schedule_no,
+      });
 
-      return response.data;
+      // return response.data;
       // 알림 메시지
       // if (response.success) {
       //   Notify.retrive();
@@ -195,9 +218,18 @@ const EDU010E01 = (props: Props) => {
       // 조회api 함수에서 받아온 데이터를 MasterGrid로 전달하기 위해 setMastergridData 훅에 담음
       // setMastergridData(response.data);
 
-      console.log('index.tsx getEmpInfo ===========>   ' + response.data[0].emp_name);
+      // console.log('index.tsx getEmpInfo ===========>   ' + response.data[0].emp_name);
 
-      return response.data;
+      masterGridRef.current.changeData('emp_name', response.data[0].emp_name);
+      masterGridRef.current.changeData('dept_code', response.data[0].dept_code);
+      masterGridRef.current.changeData('dept_name', response.data[0].dept_name);
+
+      detailFormRef.current.setEmpInfo({
+        emp_name: response.data[0].emp_name,
+        dept_code: response.data[0].dept_code,
+      });
+
+      // return response.data;
       // 알림 메시지
       // if (response.success) {
       //   Notify.retrive();
@@ -269,11 +301,16 @@ const EDU010E01 = (props: Props) => {
 
   return (
     <>
+      {/* 저장화면에선 Title에 onSave(저장) onRetrive(조회) onCleanup(초기화) 필수*/}
       <Title onSave={onSave} onRetrive={onRetrive} onCleanup={onCleanup}></Title>
 
       {/*SearchForm에서 사용할 파라미터를 전달 (SearchFormRef)*/}
       <SearchForm ref={SearchFormRef}></SearchForm>
       <LeftContent>
+        {/* originRow ==> api에서 받아온 데이터를 파라미터로 넘겨줌 
+                    onSelectData ==> 마스터그리드를 클릭했을 때 이벤트를 지정 (각 화면마다 동일)
+                    ref ==> 마스터그리드에서 사용할 파라미터 
+                */}
         <MasterGrid
           originRows={mastergridData}
           onSelectData={onMasterGridSelect}

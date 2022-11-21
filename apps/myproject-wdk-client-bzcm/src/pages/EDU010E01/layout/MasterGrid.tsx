@@ -8,8 +8,8 @@ import { useRecoilValue } from 'recoil';
 type MasterGridProps = {
   originRows: Array<any>;
   onSelectData: (value) => void;
-  onGetMaxEduSchedule: () => void;
-  onGetEmpInfo: (value) => any;
+  onGetMaxEduSchedule: (value) => void;
+  onGetEmpInfo: (value) => void;
   /**  */
 };
 
@@ -86,20 +86,21 @@ const MasterGrid = React.forwardRef<GridForwardFunc, MasterGridProps>(
           const thisYear = new Date().getFullYear();
           const todayString = getDate(new Date().toString());
 
-          const empInfo = onGetEmpInfo('23100001');
-          console.log('onGetEmpInfo ==============> ' + empInfo);
+          const emp_no = userInfo.emp_no;
+          const empInfo = onGetEmpInfo(emp_no);
+          const maxEduScheduleNo = onGetMaxEduSchedule('N');
 
           masterGrid.current.insertRow({
             edu_plan_no: getUniqueValue(),
             // To Do : 교육일정번호 마감여부가 N 인 것 중 Max값 가져오기
             // edu_schedule_no: onGetMaxEduSchedule(),
-            edu_schedule_no: 'schdl00003',
+            edu_schedule_no: null,
             // To Do : 교육일정번호 마감여부가 N 인 것 중 Max값 가져오기
             edu_year: thisYear,
 
             //사원명 가져오기
             edu_name: null,
-            emp_no: userInfo.emp_no,
+            emp_no: emp_no,
             edu_from_dt: todayString,
             edu_to_dt: todayString,
             edu_time: null,
@@ -116,6 +117,7 @@ const MasterGrid = React.forwardRef<GridForwardFunc, MasterGridProps>(
             rmk: null,
             dept_code: null,
             edu_cost: null,
+            close_yn: 'N',
           });
           break;
         }

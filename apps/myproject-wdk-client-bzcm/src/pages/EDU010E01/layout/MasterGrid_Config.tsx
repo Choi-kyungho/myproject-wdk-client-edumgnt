@@ -205,6 +205,13 @@ export const GridConfig = [
     width: 150,
   },
   {
+    fieldName: 'close_yn',
+    dataType: ValueType.TEXT,
+    visible: false,
+    headerText: '마감여부',
+    width: 150,
+  },
+  {
     fieldName: 'first_rg_yms',
     dataType: ValueType.TEXT,
     visible: false,

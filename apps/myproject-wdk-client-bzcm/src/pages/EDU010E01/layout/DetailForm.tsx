@@ -41,6 +41,13 @@ const DetailForm = React.forwardRef<DetailFormForwardFunc, DetailFormProps>(({ o
       form.setValue('edu_cmplt_yn@@Y', value.edu_cmplt_yn);
       form.setValue('edu_absence_yn@@Y', value.edu_absence_yn);
     },
+    setEmpInfo(value) {
+      form.setValue('emp_name', value.emp_name);
+      form.setValue('dept_code', value.dept_code);
+    },
+    setMaxEduScheduleNo(value) {
+      form.setValue('edu_schedule_no', value.edu_schedule_no);
+    },
   }));
 
   const checkOptions = [{ detail_code_id: 'Y', detail_code_name: '' }];
@@ -118,7 +125,8 @@ const DetailForm = React.forwardRef<DetailFormForwardFunc, DetailFormProps>(({ o
             <Field
               label="부서"
               name={'dept_code'}
-              type={SFType.Text}
+              type={SFType.Selectbox}
+              code={'CM10'}
               labelStyles={{ width: '200px' }}
               styles={{ width: '150px' }}
               onChange={onElementChange}
@@ -251,7 +259,6 @@ const DetailForm = React.forwardRef<DetailFormForwardFunc, DetailFormProps>(({ o
               onChange={onElementChange}
             />
           </DetailRow>
-          
           {/* <DetailRow>
             <Field
               label="첨부"

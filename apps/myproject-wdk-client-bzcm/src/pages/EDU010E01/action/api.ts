@@ -21,7 +21,6 @@ export default class ApiCall {
 
       params: {
         // API에서 사용할 조회파라미터 설정
-        // 파라미터 추가/수정/삭제시 최경호에게 전달
         p_edu_year: searchValue.EDU_YEAR,
         p_edu_name: searchValue.EDU_NAME,
         p_emp_no: searchValue.EMP_NAME,
@@ -35,10 +34,7 @@ export default class ApiCall {
       url: '/api/bzcm/EDU010E01/getMaxEduSchedule/',
       params: {
         // API에서 사용할 조회파라미터 설정
-        // 파라미터 추가/수정/삭제시 최경호에게 전달
-        // p_edu_year: searchValue.EDU_YEAR,
-        // p_edu_name: searchValue.EDU_NAME,
-        // p_emp_no: searchValue.EMP_NO,
+        p_close_yn: searchValue,
       },
     };
     return this.httpRequest(config);
@@ -51,7 +47,6 @@ export default class ApiCall {
       url: '/api/bzcm/EDU010E01/getEmpInfo/',
       params: {
         // API에서 사용할 조회파라미터 설정
-        // 파라미터 추가/수정/삭제시 최경호에게 전달
         p_emp_no: searchValue,
       },
     };
