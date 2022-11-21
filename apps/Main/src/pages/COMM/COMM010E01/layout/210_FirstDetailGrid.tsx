@@ -107,6 +107,7 @@ const FirstDetailGrid: React.FC<FirstDetailGridProps> = forwardRef(
      * 공통버튼 이벤트
      */
     const addRow = () => {
+      alert("123");
       if (relationFields !== undefined && relationFields.length !== 0) {
         onAddData();
       } else {

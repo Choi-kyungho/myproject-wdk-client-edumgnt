@@ -14,8 +14,7 @@ type PropsType ={
     data:any
 }
 
-const LeftContentGraph = ({ data }: PropsType ) => {
-    console.log("totalcount.tsx === props >>>>"+JSON.stringify(data));
+const ByYearEduCost = ({ data }: PropsType ) => {
     const [graphData,setDataTemp]= React.useState<any>(data); 
 
     useEffect(()=>{
@@ -33,8 +32,8 @@ const LeftContentGraph = ({ data }: PropsType ) => {
     };
     return (
         // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정
-        <div style={{ width: '500px', height: '350px', margin: '0 auto'}}>
-            <div style={{ textAlign: 'center'}}><p style={{fontSize: '20px'}}>부서별교육비현황</p></div>
+        <div style={{ width: '750px', height: '670px', margin: '0 auto'}}>
+            <div style={{ textAlign: 'center'}}><p style={{fontSize:'33px', fontWeight:'600', paddingBottom: '50px'}}>연도별 교육비현황</p></div>
             <ResponsivePie
                 /**
                  * chart에 사용될 데이터
@@ -92,8 +91,9 @@ const LeftContentGraph = ({ data }: PropsType ) => {
                      */
                     labels: {
                         text: {
-                            fontSize: 10,
-                            fill: '#000000',
+                            fontSize: 18,
+                            fill: '#FFFFFF',
+                            textShadow: '1px 1px 1px #000'
                         },
                     },
                     /**
@@ -101,7 +101,7 @@ const LeftContentGraph = ({ data }: PropsType ) => {
                      */
                     legends: {
                         text: {
-                            fontSize: 11,
+                            fontSize: 14,
                             fill: '#000000',
                         },
                     },
@@ -115,6 +115,7 @@ const LeftContentGraph = ({ data }: PropsType ) => {
                  */
                 legends={[
                     {
+                        
                         anchor: 'bottom', // 위치
                         direction: 'row', // item 그려지는 방향
                         justify: false, // 글씨, 색상간 간격 justify 적용 여부
@@ -144,4 +145,4 @@ const LeftContentGraph = ({ data }: PropsType ) => {
     );
 };
 
-export default LeftContentGraph;
+export default ByYearEduCost;

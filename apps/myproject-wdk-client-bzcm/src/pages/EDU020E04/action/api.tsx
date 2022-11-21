@@ -16,7 +16,8 @@
       const config = {
         url: "/api/bzcm/EDU020E04/byYearEduCostList/",
         params: {
-          p_use_yn: 'Y'
+          p_use_yn: 'Y',
+          p_edu_year:searchValue.EDU_YEAR
         },
       };
       return this.httpRequest(config);
@@ -26,7 +27,8 @@
       const config = {
         url: "/api/bzcm/EDU020E04/byDeptEduCostList/",
         params: {
-          p_use_yn: 'Y'
+          p_use_yn: 'Y',
+          p_edu_year:searchValue.EDU_YEAR
         },
       };
       return this.httpRequest(config);
@@ -36,7 +38,29 @@
       const config = {
         url: "/api/bzcm/EDU020E04/byEmpEduCostList/",
         params: {
-          p_use_yn: 'Y'
+          p_use_yn: 'Y',
+          p_edu_year:searchValue.EDU_YEAR
+        },
+      };
+      return this.httpRequest(config);
+    };
+
+    retrieveGrid1 = async (searchValue) => {
+      const config = {
+        url: "/api/bzcm/EDU020E04/byYearEduCostList_Grid1/",
+        params: {
+          p_use_yn: 'Y',
+        },
+      };
+      return this.httpRequest(config);
+    };
+
+    retrieveGrid2 = async (searchValue) => {
+      const config = {
+        url: "/api/bzcm/EDU020E04/byDeptEduCostList_Grid1/",
+        params: {
+          p_use_yn: 'Y',
+          p_edu_year:searchValue.EDU_YEAR
         },
       };
       return this.httpRequest(config);

@@ -31,7 +31,7 @@ const EduList5to10=({ data }: PropsType )=>{
     <div className="eduNameList" style={{marginTop:'220px'}}>
       {eduData && eduData.map((eduData) =>(
         <>  
-          <Card style={{ width:'90%', marginLeft:'53px', height: '100px',
+          <Card style={{ width:'94%', marginLeft:'35px', height: '100px',
           boxShadow: 'rgb(0 0 0 / 20%) 1px 1px 1px 1px, rgb(0 0 0 / 14%) 1px 1px 0px 2px, rgb(0 0 0 / 12%) 1px 1px 3px 0px'
           }}>
           <div style={{paddingLeft: '15px', paddingTop: '10px', float:'left'}}>

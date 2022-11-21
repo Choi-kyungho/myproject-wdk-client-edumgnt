@@ -3,15 +3,16 @@ import { ResponsiveBar } from '@nivo/bar';
 import { FcBarChart } from "react-icons/fc";
 
 type PropsType ={
-    data:any
+    data:any,
+    onModalDisplay:(el) => void
 }
 
 // 연도별 교육현황
-const LeftContentGraph1 = ({ data }: PropsType )  => {
-    console.log("LeftContentGraph1====>"+JSON.stringify(data));
+const LeftContentGraph1 = ({ data, onModalDisplay }: PropsType )  => {
     const handle = {
         barClick: (data: any) => {
             console.log(data);
+            onModalDisplay(data);
         },
 
         legendClick: (data: any) => {
@@ -21,13 +22,9 @@ const LeftContentGraph1 = ({ data }: PropsType )  => {
 
     return (
         // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정
-        <div style={{ width: '500px', height: '330px'}}>
-            <div style={{float: 'left', paddingTop: '5px', paddingRight: '5px'}}>
-                <FcBarChart size={15}></FcBarChart>
-            </div>
-            <div style={{float: 'left'}}>
-                <p style={{fontSize: '14px'}}> 연도별교육현황</p>
-                <p style={{fontSize: '12px', color: 'grey'}}> - 최근 3개년 추이</p>
+        <div style={{ width: '800px', height: '350px', paddingTop: '40px'}}>
+            <div style={{textAlign: 'center', paddingBottom: '30px'}}>
+                <p style={{fontSize: '35px', fontWeight: '600', paddingBottom: '30px'}}> 연도별교육현황</p>
             </div>
             <ResponsiveBar
                 /**
@@ -53,7 +50,7 @@ const LeftContentGraph1 = ({ data }: PropsType )  => {
                 /**
                  * chart 색상
                  */
-                colors={['#B3EFFF', '#00CFFF', '#046B99', '#1C304A' ]} // 커스터하여 사용할 때
+                colors={['#0066CC', '#0099CC' ]} // 커스터하여 사용할 때
                 // colors={{ scheme: 'nivo' }} // nivo에서 제공해주는 색상 조합 사용할 때
                 /**
                  * color 적용 방식
@@ -66,8 +63,10 @@ const LeftContentGraph1 = ({ data }: PropsType )  => {
                      */
                     labels: {
                         text: {
-                            fontSize: 10,
-                            fill: '#000000',
+                            fontSize: 14,
+                            fill: '#FFFFFF',
+                            fontWeight: 600,
+                            textShadow: '1px 1px 1px #000'
                         },
                     },
                     /**
@@ -75,7 +74,7 @@ const LeftContentGraph1 = ({ data }: PropsType )  => {
                      */
                     legends: {
                         text: {
-                            fontSize: 10,
+                            fontSize: 13,
                             fill: '#000000',
                         },
                     },
@@ -85,7 +84,7 @@ const LeftContentGraph1 = ({ data }: PropsType )  => {
                          */
                         legend: {
                             text: {
-                                fontSize: 10,
+                                fontSize: 13,
                                 fill: '#000000',
                             },
                         },
@@ -94,7 +93,7 @@ const LeftContentGraph1 = ({ data }: PropsType )  => {
                          */
                         ticks: {
                             text: {
-                                fontSize: 10,
+                                fontSize: 12,
                                 fill: '#000000',
                             },
                         },
@@ -145,7 +144,7 @@ const LeftContentGraph1 = ({ data }: PropsType )  => {
                         justify: false, // 글씨, 색상간 간격 justify 적용 여부
                         translateX: 120, // chart와 X 간격
                         translateY: 0, // chart와 Y 간격
-                        itemsSpacing: 2, // item간 간격
+                        itemsSpacing: 13, // item간 간격
                         itemWidth: 100, // item width
                         itemHeight: 20, // item height
                         itemDirection: 'left-to-right', // item 내부에 그려지는 방향
@@ -164,6 +163,9 @@ const LeftContentGraph1 = ({ data }: PropsType )  => {
                     },
                 ]}
             />
+            <div style={{textAlign: 'center'}}>
+                <p style={{fontSize: '16px', color:'gray', fontWeight: '600'}}> 최근 3개년 추이</p>
+            </div>
         </div>
     );
 };

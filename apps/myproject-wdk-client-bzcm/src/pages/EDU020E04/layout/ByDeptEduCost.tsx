@@ -14,8 +14,7 @@ type PropsType ={
     data:any
 }
 
-const TopContentGraph = ({ data }: PropsType ) => {
-    console.log("totalcount.tsx === props >>>>"+JSON.stringify(data));
+const ByDeptEduCost = ({ data }: PropsType ) => {
     const [graphData,setDataTemp]= React.useState<any>(data); 
 
     useEffect(()=>{
@@ -33,8 +32,8 @@ const TopContentGraph = ({ data }: PropsType ) => {
     };
     return (
         // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정
-        <div style={{ width: '500px', height: '350px', margin: '0 auto'}}>
-            <div style={{ textAlign: 'center'}}><p style={{fontSize: '20px'}}>연도별교육비현황</p></div>
+        <div style={{ width: '750px', height: '670px', margin: '0 auto'}}>
+            <div style={{ textAlign: 'center'}}><p style={{fontSize:'33px', fontWeight:'600', paddingBottom: '50px'}}>부서별 교육비현황</p></div>
             <ResponsivePie
                 /**
                  * chart에 사용될 데이터
@@ -92,8 +91,9 @@ const TopContentGraph = ({ data }: PropsType ) => {
                      */
                     labels: {
                         text: {
-                            fontSize: 10,
-                            fill: '#000000',
+                            fontSize: 14,
+                            fill: '#FFFFFF',
+                            textShadow: '1px 1px 1px #000'
                         },
                     },
                     /**
@@ -101,7 +101,7 @@ const TopContentGraph = ({ data }: PropsType ) => {
                      */
                     legends: {
                         text: {
-                            fontSize: 11,
+                            fontSize: 13,
                             fill: '#000000',
                         },
                     },
@@ -144,4 +144,4 @@ const TopContentGraph = ({ data }: PropsType ) => {
     );
 };
 
-export default TopContentGraph;
+export default ByDeptEduCost;

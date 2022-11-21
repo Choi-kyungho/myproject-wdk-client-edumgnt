@@ -3,16 +3,18 @@ import { ResponsiveBar } from '@nivo/bar';
 import { FcBarChart } from "react-icons/fc";;
 
 type PropsType ={
-    data:any
+    data:any,
+    onModalDisplay:(el) => void
 }
 
 
-const LeftContentGraph2 = ({ data }: PropsType )  => {
+const LeftContentGraph2 = ({ data, onModalDisplay }: PropsType )  => {
 
     console.log("LeftContentGraph2====>"+JSON.stringify(data));
     const handle = {
         barClick: (data: any) => {
             console.log(data);
+            onModalDisplay(data);
         },
 
         legendClick: (data: any) => {
@@ -25,15 +27,12 @@ const LeftContentGraph2 = ({ data }: PropsType )  => {
         // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정
         
 
-        <div style={{ width: '500px', height: '330px'}}>
-            <div style={{float: 'left', paddingTop: '5px', paddingRight: '5px'}}>
-                <FcBarChart size={15}></FcBarChart>
-            </div>
-            <div style={{float: 'left'}}>
-                <p style={{fontSize: '14px'}}> 연도별교육현황</p>
-                <p style={{fontSize: '12px', color: 'grey'}}> - 사원별 교육수료순위</p>
+        <div style={{ width: '820px', height: '450px', paddingTop: '100px'}}>
+            <div style={{textAlign: 'center'}}>
+                {/* <p style={{fontSize: '30px', fontWeight: '600'}}> 연도별교육현황</p> */}
             </div>
             <ResponsiveBar
+                layout='horizontal'
                 /**
                  * chart에 사용될 데이터
                  */
@@ -56,22 +55,25 @@ const LeftContentGraph2 = ({ data }: PropsType )  => {
                 padding={0.3}
                 /**
                  * chart 색상
-                 */
-                colors={['#B3EFFF', '#00CFFF', '#046B99', '#1C304A' ]} // 커스터하여 사용할 때
+                 */   
+                colors={['#28B0CB']} // 커스터하여 사용할 때
+                
                 // colors={{ scheme: 'nivo' }} // nivo에서 제공해주는 색상 조합 사용할 때
                 /**
                  * color 적용 방식
                  */
-                colorBy="id" // 색상을 keys 요소들에 각각 적용
-                // colorBy="indexValue" // indexBy로 묵인 인덱스별로 각각 적용
+                //colorBy="id" // 색상을 keys 요소들에 각각 적용
+                colorBy="indexValue" // indexBy로 묵인 인덱스별로 각각 적용
                 theme={{
                     /**
                      * label style (bar에 표현되는 글씨)
                      */
                     labels: {
                         text: {
-                            fontSize: 10,
-                            fill: '#000000',
+                            fontSize: 14,
+                            fill: '#FFFFFF',
+                            fontWeight: 600,
+                            textShadow: '1px 1px 1px #000'
                         },
                     },
                     /**
@@ -79,7 +81,7 @@ const LeftContentGraph2 = ({ data }: PropsType )  => {
                      */
                     legends: {
                         text: {
-                            fontSize: 10,
+                            fontSize: 13,
                             fill: '#000000',
                         },
                     },
@@ -89,7 +91,7 @@ const LeftContentGraph2 = ({ data }: PropsType )  => {
                          */
                         legend: {
                             text: {
-                                fontSize: 10,
+                                fontSize: 13,
                                 fill: '#000000',
                             },
                         },
@@ -98,7 +100,7 @@ const LeftContentGraph2 = ({ data }: PropsType )  => {
                          */
                         ticks: {
                             text: {
-                                fontSize: 10,
+                                fontSize: 12,
                                 fill: '#000000',
                             },
                         },
@@ -122,7 +124,7 @@ const LeftContentGraph2 = ({ data }: PropsType )  => {
                     tickSize: 1, // 값 설명하기 위해 튀어나오는 점 크기
                     tickPadding: 5, // tick padding
                     tickRotation: 0, // tick 기울기
-                    legend: '교육시간(H)', // left 글씨
+                    legend: '', // left 글씨
                     legendPosition: 'middle', // 글씨 위치
                     legendOffset: -55, // 글씨와 chart간 간격
                 }}
@@ -168,6 +170,9 @@ const LeftContentGraph2 = ({ data }: PropsType )  => {
                     },
                 ]}
             />
+            <div style={{textAlign: 'center'}}>
+                <p style={{fontSize: '16px', color:'gray', fontWeight: '600'}}> 연도별 교육수료순위 (사원)</p>
+            </div>
         </div>
     );
 };

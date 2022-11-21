@@ -5,25 +5,30 @@ import {
     GridHeader,
     Retrive,
     userInfoGlobalState,
+    Button
   } from "@vntgcorp/vntg-wdk-client";
   import React, { useEffect, useState } from "react";
 import { ResponsivePie } from '@nivo/pie';
+import { MdGroups } from "react-icons/md";
+
+import Index from '../index';
 
 type PropsType ={
-    data:any
+    data:any,
+    onModalDisplay:(el) => void
 }
 
-const TotalCount = ({ data }: PropsType ) => {
-    console.log("totalcount.tsx === props >>>>"+JSON.stringify(data));
+const TotalCount = ({ data, onModalDisplay }: PropsType) => {
     const [graphData,setDataTemp]= React.useState<any>(data); 
-
+    
     useEffect(()=>{
         setDataTemp(data)
     },[data])
 
     const handle = {
         padClick: (data: any) => {
-            console.log(data);
+            //alert(JSON.stringify(data));
+            onModalDisplay(data);
         },
 
         legendClick: (data: any) => {
@@ -31,9 +36,11 @@ const TotalCount = ({ data }: PropsType ) => {
         },
     };
     return (
+        
         // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정
-        <div style={{ width: '720px', height: '450px', margin: '0 auto', paddingTop: '50px' }}>
-            <div style={{ textAlign: 'center'}}><h4>총인원구성</h4></div>
+        <div style={{ width: '900px', height: '550px', margin: '0 auto', paddingTop: '50px' }}>
+            <div style={{paddingLeft: '405px', position: 'absolute', paddingTop: '205px' }}><MdGroups style={{width:'90px', height:'90px', color:'#0C2978'}}></MdGroups></div>
+            <div style={{ textAlign: 'center'}}><p style={{fontSize:'33px', fontWeight:'600'}}>총인원구성</p></div>
             <ResponsivePie
                 /**
                  * chart에 사용될 데이터
@@ -59,7 +66,7 @@ const TotalCount = ({ data }: PropsType ) => {
                 /**
                  * chart 색상
                  */
-                colors={['#B3EFFF', '#00CFFF', '#046B99', '#1C304A' ]} // 커스터하여 사용할 때
+                colors={['#0C2978', '#2056B5', '#4195FC', '#8CCAFE', '#D9F0FE' ]} // 커스터하여 사용할 때
                 //colors={{ scheme: 'nivo' }} // nivo에서 제공해주는 색상 조합 사용할 때
                 /**
                  * pad border 두께 설정
@@ -92,7 +99,8 @@ const TotalCount = ({ data }: PropsType ) => {
                     labels: {
                         text: {
                             fontSize: 14,
-                            fill: '#000000',
+                            fill: '#FFFFFF',
+                            textShadow: '1px 1px 1px #000'
                         },
                     },
                     /**
@@ -109,6 +117,7 @@ const TotalCount = ({ data }: PropsType ) => {
                  * pad 클릭 이벤트
                  */
                 onClick={handle.padClick}
+                //onClick={()=>onModalDisplay(data)}
                 /**
                  * legend 설정 (default로 하단에 있는 색상별 key 표시)
                  */
@@ -119,7 +128,7 @@ const TotalCount = ({ data }: PropsType ) => {
                         justify: false, // 글씨, 색상간 간격 justify 적용 여부
                         translateX: 0, // chart와 X 간격
                         translateY: 56, // chart와 Y 간격
-                        itemsSpacing: 0, // item간 간격
+                        itemsSpacing: 10, // item간 간격
                         itemWidth: 100, // item width
                         itemHeight: 18, // item height
                         itemDirection: 'left-to-right', // item 내부에 그려지는 방향

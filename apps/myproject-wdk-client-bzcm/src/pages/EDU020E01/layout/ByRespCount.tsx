@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { ResponsivePie } from '@nivo/pie';
-
+import { RiOrganizationChart } from "react-icons/ri";
 
 type PropsType ={
-    data:any
+    data:any,
+    onModalDisplay:(el) => void
 }
 
-const ByRespCount = ({data}: PropsType) => {
+const ByRespCount = ({data, onModalDisplay}: PropsType) => {
 
     const [graphData,setDataTemp]= React.useState<any>(data); 
     useEffect(()=>{
@@ -16,6 +17,7 @@ const ByRespCount = ({data}: PropsType) => {
     const handle = {
         padClick: (data: any) => {
             console.log(data);
+            onModalDisplay(data);
         },
 
         legendClick: (data: any) => {
@@ -24,8 +26,9 @@ const ByRespCount = ({data}: PropsType) => {
     };
     return (
         // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정
-        <div style={{ width: '540px', height: '350px', margin: '0 auto', paddingTop: '50px' }}>
-            <div style={{ textAlign: 'center'}}><h4>직급별 인원구성</h4></div>
+        <div style={{ width: '740px', height: '430px', margin: '0 auto', paddingTop: '50px' }}>
+            <div style={{paddingLeft: '347px', position: 'absolute', paddingTop: '187px' }}><RiOrganizationChart style={{width:'50px', height:'50px', color:'#7A3C04'}}></RiOrganizationChart></div>
+            <div style={{ textAlign: 'center'}}><p style={{fontSize:'33px', fontWeight:'600', paddingBottom: '20px'}}>직급별 인원구성</p></div>
             <ResponsivePie
                 /**
                  * chart에 사용될 데이터
@@ -51,8 +54,9 @@ const ByRespCount = ({data}: PropsType) => {
                 /**
                  * chart 색상
                  */
-                colors={['#B3EFFF', '#00CFFF', '#046B99', '#1C304A' ]} // 커스터하여 사용할 때
+                //colors={['#7A3C04', '#B76A0B', '#FFA916', '#FFD573', '#FFF4D0' ]} // 커스터하여 사용할 때
                 //colors={{ scheme: 'nivo' }} // nivo에서 제공해주는 색상 조합 사용할 때
+                colors={{scheme: 'yellow_green_blue'}}
                 /**
                  * pad border 두께 설정
                  */
@@ -84,7 +88,8 @@ const ByRespCount = ({data}: PropsType) => {
                     labels: {
                         text: {
                             fontSize: 14,
-                            fill: '#000000',
+                            fill: '#FFFFFF',
+                            textShadow: '1px 1px 1px #000'
                         },
                     },
                     /**

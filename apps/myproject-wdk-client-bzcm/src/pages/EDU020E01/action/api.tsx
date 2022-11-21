@@ -39,4 +39,19 @@
       };
       return this.httpRequest(config);
     };
+    retriveModal = async (searchValue) => {
+      console.log("api 조회조건====>"+JSON.stringify(searchValue));
+      
+      const config = {
+        url: "/api/bzcm/EDU020E01/emplistGrid/",
+        params: {
+          p_use_yn: 'Y',
+          p_emp_name: searchValue.p_emp_name,
+          p_dept_code: searchValue.p_dept_code,
+          p_responsi_code: searchValue.p_responsi_name,
+          p_job_code: searchValue.p_job_name,
+        },
+      };
+      return this.httpRequest(config);
+    };
   }

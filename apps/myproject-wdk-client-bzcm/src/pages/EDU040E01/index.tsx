@@ -88,16 +88,6 @@ const EDU040E01 = () => {
         <BottomContent>
           <EduList5to10 data={crawlingData2}></EduList5to10>
         </BottomContent>
-          {/* {!show && <CircularProgress style={{width:'150px', height:'150px', marginTop: '25%', textAlign:'center', marginLeft:'45%'}}/>} 
-          {!show && <DataLoading></DataLoading>}
-        {show && <EduListHeader title="실시간 교육 TOP 10"></EduListHeader>}
-        <LeftContent>
-          <EduList1to5 data={crawlingData}></EduList1to5>
-        </LeftContent>
-        <RightContent>
-          <EduList5to10 data={crawlingData2}></EduList5to10>
-        </RightContent> */}
-
       </MainContent>
     </>
   )

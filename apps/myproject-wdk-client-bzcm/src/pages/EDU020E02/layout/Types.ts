@@ -56,13 +56,7 @@ export type GridConfigType = {
   styleCallback?: (grid, dataCell) => { styleName: string };
 };
 
-export type FormProps = {
-  busi_place: string;
-  emp_name: string;
-  task_plant_code: string;
-  task_equip_code: string;
-  task_unit_work_code: string;
-};
+
 
 export type MasterGridProps = {
   title: string;
@@ -80,5 +74,51 @@ export type MasterGridProps = {
 export type SearchProps = {
   onChangeEduYear: (name, value) => void;
   ref: ReactNode;
+  button: string;
 };
 
+type Handler = {
+  cleanup: () => void;
+};
+
+export type SearchHandler = Handler & {
+  submit: () => void;
+};
+
+export type ModalHandler = Handler & {
+  confirm: () => [];
+};
+
+export type DetailGridRowDataType = {
+  emp_no?: string;
+  emp_name?: string;
+  user_id?: string;
+  dept_code?: string;
+  dept_name?: string;
+  job?: string;
+  job_name?: string;
+  responsi?: string;
+  responsi_name?: string;
+  phon_number?: string;
+  email?: string;
+  use_yn?: string;
+  row_stat?: 'added' | 'unchanged' | 'modified' | 'deleted';
+};
+
+
+export type FormProps = {
+  search_text: string;
+  use_yn: string;
+  dept_code: string,
+  dept_name: string,
+  responsi_name: string,
+  job_name: string,
+  edu_year: string,
+  cmplt_yn: string,
+  emp_no: string,
+};
+
+export type ModalSearchFormProps = {
+  search_text: string;
+  use_yn: string;
+};

@@ -7,6 +7,7 @@ import TotalCount from './layout/TotalCount';
 import ByJobCount from './layout/ByJobCount';
 import ByRespCount from './layout/ByRespCount';
 
+import PopModal from "./layout/211_PopModal";
     /* 
     화면 스타일 선언 */
     const TopContent = styled.section`
@@ -27,21 +28,36 @@ import ByRespCount from './layout/ByRespCount';
   `;
 
 const EDU020E01 = () => {
-  const dataTmp = [
-    { id: 'ERP운영팀', value: 324, row_stat: 'unchanged'},
-    { id: '정보보호팀', value: 88, row_stat: 'unchanged'},
-    { id: '사업1팀', value: 221, row_stat: 'unchanged'},
-    { id: '사업2팀', value: 123, row_stat: 'unchanged'},
-]; 
-    console.log("======EDU020E01 전체인원현황 Start ======");
-
+    // const dataTmp = [
+    //   { id: 'ERP운영팀', value: 324, row_stat: 'unchanged'},
+    //   { id: '정보보호팀', value: 88, row_stat: 'unchanged'},
+    //   { id: '사업1팀', value: 221, row_stat: 'unchanged'},
+    //   { id: '사업2팀', value: 123, row_stat: 'unchanged'},
+    // ]; 
+  
     const [, fetchRequest] = useSyncHttpCient<IResData>();
     const apiCall = new ApiCall(fetchRequest);
 
     const [totalCnt, setTotalCnt] = useState([]);
     const [byJobCnt, setbyJobCnt] = useState([]);
     const [byRespCnt, setbyRespCnt] = useState([]);
-    
+
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const [detailRows, setDetailRows] = useState([]);
+    const [searchParam, setSearchParam] = useState({});
+
+    const onAddData = () => {
+      if (!isOpenModal) {
+        setIsOpenModal(true);
+      }
+    };
+  
+    const closeAddData = () => {
+      if (isOpenModal) {
+        setIsOpenModal(false);
+      }
+    };
+
     React.useEffect(()=>{
       const searchValue = 'Y'
 
@@ -61,17 +77,45 @@ const EDU020E01 = () => {
       });
     },[])
 
+    const [CreateModal, setCreateModal] = useState(false); // 모달 생성 유무
+​
+    // 모달 On
+    const onModalDisplay_fromDept = ((el) => {
+      console.log("onModalDisplay param ===>"+JSON.stringify(el.data.dept_code));
+      setSearchParam(el.data);
+      onAddData(); 
+    });
+
+    const onModalDisplay_fromJob = ((el) => {
+      console.log("onModalDisplay_fromJob param ===>"+JSON.stringify(el.data.job));
+      setSearchParam(el.data);
+      onAddData(); 
+    });
+
+    const onModalDisplay_fromResp = ((el) => {
+      console.log("onModalDisplay_fromResp param ===>"+JSON.stringify(el.data.responsi));
+      setSearchParam(el.data);
+      onAddData(); 
+    });
+
     return <>
       <Title useCleanup={false} useRetrive={false} useSave={false}></Title>
       <TopContent>
-        <TotalCount data={totalCnt}></TotalCount>
+        <TotalCount data={totalCnt} onModalDisplay={onModalDisplay_fromDept}></TotalCount>
       </TopContent>
-      <LeftContent>
-        <ByJobCount data={byJobCnt}></ByJobCount>
+      <LeftContent onClick={onAddData}>
+        <ByJobCount data={byJobCnt} onModalDisplay={onModalDisplay_fromJob}></ByJobCount>
       </LeftContent>
-      <RightContent>
-        <ByRespCount data={byRespCnt}></ByRespCount>
+      <RightContent onClick={onAddData}>
+        <ByRespCount data={byRespCnt} onModalDisplay={onModalDisplay_fromResp}></ByRespCount>
       </RightContent>
+      {isOpenModal && (
+        <PopModal
+          onModalClose={closeAddData}
+          detailRows={detailRows}
+          searchParam={searchParam}
+        ></PopModal>
+      )}
     </>
 };
 

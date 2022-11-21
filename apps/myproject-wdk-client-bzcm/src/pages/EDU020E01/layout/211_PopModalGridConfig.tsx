@@ -1,0 +1,111 @@
+import { ValueType } from 'realgrid';
+
+export const Config = [
+  {
+    fieldName: 'emp_no',
+    dataType: ValueType.TEXT,
+    visible: true,
+    headerText: '사번',
+    width: 105,
+  },
+  {
+    fieldName: 'emp_name',
+    dataType: ValueType.TEXT,
+    visible: true,
+    headerText: '성명',
+    width: 110,
+  },
+  {
+    fieldName: 'user_id',
+    dataType: ValueType.TEXT,
+    visible: true,
+    headerText: 'ID',
+    width: 100,
+  },
+  {
+    fieldName: 'dept_code',
+    dataType: ValueType.TEXT,
+    visible: false,
+    headerText: '부서코드',
+    width: 80,
+  },
+  {
+    fieldName: 'dept_name',
+    dataType: ValueType.TEXT,
+    visible: true,
+    headerText: '부서명',
+    width: 130,
+  },
+  {
+    fieldName: 'job',
+    dataType: ValueType.TEXT,
+    visible: false,
+    headerText: '직무',
+  },
+  {
+    fieldName: 'job_name',
+    dataType: ValueType.TEXT,
+    visible: true,
+    headerText: '직무명',
+    width: 130,
+  },
+  {
+    fieldName: 'responsi',
+    dataType: ValueType.TEXT,
+    visible: false,
+    headerText: '직책',
+  },
+  {
+    fieldName: 'responsi_name',
+    dataType: ValueType.TEXT,
+    visible: true,
+    headerText: '직책명',
+    width: 130,
+  },
+  {
+    fieldName: 'phon_number',
+    dataType: ValueType.TEXT,
+    visible: true,
+    headerText: '전화번호',
+    width: 150,
+  },
+  {
+    fieldName: 'email',
+    dataType: ValueType.TEXT,
+    visible: true,
+    headerText: '이메일',
+    width: 200,
+  },
+  {
+    fieldName: 'use_yn',
+    dataType: ValueType.TEXT,
+    visible: true,
+    headerText: '사용여부',
+    width: 70,
+  },
+  {
+    fieldName: 'first_rg_yms',
+    dataType: ValueType.TEXT,
+    visible: false,
+  },
+  {
+    fieldName: 'first_rg_idf',
+    dataType: ValueType.TEXT,
+    visible: false,
+  },
+  {
+    fieldName: 'last_update_yms',
+    dataType: ValueType.TEXT,
+    visible: false,
+  },
+  {
+    fieldName: 'last_update_idf',
+    dataType: ValueType.TEXT,
+    visible: false,
+  },
+  {
+    fieldName: 'row_stat',
+    dataType: ValueType.TEXT,
+    visible: false,
+  },
+];

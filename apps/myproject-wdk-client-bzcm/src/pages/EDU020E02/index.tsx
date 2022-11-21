@@ -8,14 +8,12 @@ import RightContentGraph1 from './layout/RightContentGraph1';
 import LeftContentGraph2 from './layout/LeftContentGraph2';
 import RightContentGraph2 from './layout/RightContentGraph2';
 import SearchForm from './layout/SearchForm';
-import {
-    Card,   
-  } from "@material-ui/core";
+import PopModal from "./layout/211_PopModal";
     /* 
     화면 스타일 선언 */
     const MainContent = styled.section`
     width: 70%;
-    margin-left: 250px;
+    margin-left: 130px;
     margin-right: 180px;
     padding-top: 15px;
     `;
@@ -25,24 +23,39 @@ import {
     width: 47%;
     height: 50%;
     margin-left: 20px;
+    padding-bottom: 30px;
+    margin-bottom: 50px;
   `;
     const RightContent1 = styled.section`
     float: right;
-    width: 47%;
+    width: 35%;
     height: 50%;
+    margin-bottom: 50px;
   `;
   const LeftContent2 = styled.section`
     float: left;
-    width: 47%;
     height: 50%;
     margin-left: 20px;
     margin-top: 20px;
   `;
     const RightContent2 = styled.section`
     float: right;
-    width: 47%;
+    width: 35%;
     height: 50%;
     margin-top: 20px;
+  `;
+
+  const LeftContent3 = styled.section`
+    float: left;
+    height: 50%;
+    margin-left: 20px;
+    margin-top: 80px;
+  `;
+    const RightContent3 = styled.section`
+    float: right;
+    width: 35%;
+    height: 50%;
+    margin-top: 80px;
   `;
 
 const EDU020E02 = () => {
@@ -53,6 +66,7 @@ const EDU020E02 = () => {
     const [byEmpEduRankTime, setbyEmpEduRankTime] = useState([]);
     const [byDeptEduRankTime, setbyDeptEduRankTime] = useState([]);
     const searchFormRef = useRef<any>(null);
+    const [searchParam, setSearchParam] = useState({});
 
     const onRetrive = () => {
       // 현재 조회파라미터들을 searchValue 변수에 담아서 조회함수에 파라미터로 전달
@@ -111,31 +125,63 @@ const EDU020E02 = () => {
       onRetrive();
     };
 
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const [detailRows, setDetailRows] = useState([]);
+
+    const onAddData = () => {
+      if (!isOpenModal) {
+        setIsOpenModal(true);
+      }
+    };
+  
+    const closeAddData = () => {
+      if (isOpenModal) {
+        setIsOpenModal(false);
+      }
+    };
+
+    const onModalDisplay_fromYear = ((el) => {
+      console.log("자식에서 호출 onModalDisplay_fromYear"+ JSON.stringify(el.data.연도));
+      setSearchParam(el.data);
+      onAddData(); 
+    });
+
+    const onModalDisplay_fromDept = ((el) => {
+      console.log("자식에서 호출 onModalDisplay_fromDept"+ JSON.stringify(el.data));
+      setSearchParam(el.data);
+      onAddData(); 
+    });
+
+    const onModalDisplay_fromEmp = ((el) => {
+      console.log("자식에서 호출 onModalDisplay_fromEmp"+ JSON.stringify(el.data));
+      setSearchParam(el.data);
+      onAddData(); 
+    });
+
     return <>
       <Title onCleanup={onCleanup} useSave={false} onRetrive={onRetrive}></Title>
-        <SearchForm ref={searchFormRef} onChangeEduYear={onChangeEduYear}></SearchForm>
+      <SearchForm ref={searchFormRef} onChangeEduYear={onChangeEduYear} button={'123'}></SearchForm>
       <MainContent>
       <LeftContent1>
-        <Card style={{width: '480px', height: '380px', paddingTop: '10px', paddingLeft: '15px'}}>
-          <LeftContentGraph1 data={byYearEduTime}></LeftContentGraph1>
-        </Card>
+          <LeftContentGraph1 data={byYearEduTime} onModalDisplay={onModalDisplay_fromYear}></LeftContentGraph1>
       </LeftContent1>
       <RightContent1>
-        <Card style={{width: '480px', height: '380px', paddingTop: '10px', paddingLeft: '15px'}}>
-          <RightContentGraph1 data={byDeptEduTime}></RightContentGraph1>
-        </Card>
+          <RightContentGraph1 data={byDeptEduTime} onModalDisplay={onModalDisplay_fromDept}></RightContentGraph1>
       </RightContent1>
       <LeftContent2>
-        <Card style={{width: '480px', height: '380px', paddingTop: '10px', paddingLeft: '15px'}}>
-          <LeftContentGraph2 data={byEmpEduRankTime}></LeftContentGraph2>
-        </Card>
-      </LeftContent2>  
+          <LeftContentGraph2 data={byEmpEduRankTime} onModalDisplay={onModalDisplay_fromEmp}></LeftContentGraph2>
+      </LeftContent2>
       <RightContent2>
-        <Card style={{width: '480px', height: '380px', paddingTop: '10px', paddingLeft: '15px'}}>
-          <RightContentGraph2 data={byDeptEduRankTime}></RightContentGraph2>
-        </Card>
+          <RightContentGraph2 data={byDeptEduRankTime} onModalDisplay={onModalDisplay_fromDept}></RightContentGraph2>
       </RightContent2>
       </MainContent>
+      {isOpenModal && (
+        <PopModal
+          onModalClose={closeAddData}
+          detailRows={detailRows}
+          searchParam={searchParam}
+        ></PopModal>
+      )}
     </>
 };
 

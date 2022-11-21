@@ -37,10 +37,12 @@ const MasterGrid = React.forwardRef<GridForwardFunc, MasterGridProps>(({ originR
     changeData(name, value) {
       if (selectedRowIndex != null) {
         if (name == 'close_yn@@Y') {
+          const inputData = name.split('@@');
+
           if (value.toString() == 'true') {
-            masterGrid.current.setValue(selectedRowIndex, 'close_yn', 'Y');
+            masterGrid.current.setValue(selectedRowIndex, inputData[0], 'Y');
           } else {
-            masterGrid.current.setValue(selectedRowIndex, 'close_yn', 'N');
+            masterGrid.current.setValue(selectedRowIndex, inputData[0], 'N');
           }
         } else {
           masterGrid.current.setValue(selectedRowIndex, name, value);
@@ -54,7 +56,7 @@ const MasterGrid = React.forwardRef<GridForwardFunc, MasterGridProps>(({ originR
   React.useEffect(() => {
     masterGrid.current = new ESGrid('EDU000E04GRID');
     masterGrid.current.initializeGrid(GridConfig, originRows);
-    masterGrid.current.setBoolColumn('close_yn', 'N', false);
+    // masterGrid.current.setBoolColumn('close_yn', 'N', false);
 
     masterGrid.current.setRows(originRows);
 
