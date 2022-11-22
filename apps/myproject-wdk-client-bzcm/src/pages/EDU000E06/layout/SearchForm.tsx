@@ -44,7 +44,6 @@ const SearchForm = React.forwardRef<SearchFormForwardFunc, SearchFormProps>(({},
           <Field
             type={SFType.Yearpicker}
             label="예산년도"
-            labelStyles={{ width: 110 }}
             name="bugt_year"
             styles={{ width: '100px' }}
           ></Field>

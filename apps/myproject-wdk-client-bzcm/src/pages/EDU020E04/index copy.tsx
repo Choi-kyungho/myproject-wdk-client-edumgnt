@@ -14,19 +14,31 @@
 //   const WrapContent = styled.section`
 // `;
 
+// const WrapContent2 = styled.section`
+//   width: 100%;
+//   height: 750px;
+//   margin-top: 1000px;
+// `;
+
+// const WrapContent3 = styled.section`
+//   width: 100%;
+//   height: 750px;
+//   margin-top: 1000px;
+// `;
+
 //   const LeftGraphContent = styled.section`
 //       float: left;
 //       width: 50%;
 //       height: 100%;
 //       padding-left: 30px;
-//       padding-top: 30px;
+//       padding-top: 70px;
 //     `;
 
 //     const RightGraphContent = styled.section`
-//     float: right;
+//     float: left;
 //     width: 47%;
-//     height: 50%;
-//     padding-top: 30px;
+//     height: 100%;
+//     padding-top: 70px;
 //   `;
   
 // const EDU020E02 = () => {
@@ -34,6 +46,7 @@
 //      const [, fetchRequest] = useSyncHttpCient<IResData>();
 //      const apiCall = new ApiCall(fetchRequest);
 //      const [byYearEduCost, setbyYearEduCost] = useState([]);
+//      const [byYearEduCostGrid, setbyYearEduCostGrid] = useState([]);
 //      const [byDeptEduCost, setbyDeptEduCost] = useState([]);
 //      const [byEmpEduCost, setbyEmpEduCost] = useState([]);
 //      const searchFormRef = useRef<any>(null);
@@ -58,7 +71,36 @@
 //         apiCall.retrieve3(searchValue).then(response=>{
 //           setbyEmpEduCost(response.data);
 //         });
+
+//         // 사원별 교육비
+//         apiCall.retrieveGrid1(searchValue).then(response=>{
+//           setMastergridData(response.data);
+//         });
+
+        
 //      }
+
+//      const onRetrive_Grid1 = () => {
+//       const searchValue = searchFormRef.current.submit();
+
+//       // 사원별 교육비
+//       apiCall.retrieveGrid1(searchValue).then(response=>{
+//         setMastergridData(response.data);
+//         console.log(response.data);
+//       });
+      
+//     }
+
+//     const onRetrive_Grid2 = () => {
+//       const searchValue = searchFormRef.current.submit();
+
+//       apiCall.retrieveGrid2(searchValue).then(response=>{
+//         setMastergridData(response.data);
+//         console.log(response.data);
+//       });
+
+      
+//     }
 
 //      const masterGridRef = useRef(null);
 //      const [mastergridData, setMastergridData] = useState([]);
@@ -103,11 +145,13 @@
 //     const showCase1 = () => {
 //       setLeftState(true);
 //       setRightState(false);
+//       onRetrive_Grid1(); 
 //     }
 
 //     const showCase2 = () => {
 //       setLeftState(false);
 //       setRightState(true);
+//       onRetrive_Grid2(); 
 //     }
   
 //     const [show, setShow] = useState(false);
@@ -122,29 +166,25 @@
 //         {opacity: "1", transition: "opacity 1200ms"}: 
 //         {opacity: "0", visibility: "hidden", transition: "opacity 1200ms , visibility 1200ms",}}>
 //           <LeftGraphContent onClick={showCase1}>
-//             <Card style={{width: '750px', height: '730px', paddingTop: '20px', textAlign: 'center'}}>
 //               <ByYearEduCost data={byYearEduCost}></ByYearEduCost>
-//             </Card>
 //           </LeftGraphContent>
 //         </WrapContent>
       
 //         <RightGraphContent onClick={showCase2}>
 //           <WrapContent style={
-//             leftState == true && rightState == true ? {opacity: "1", transition: "opacity 1000ms"}
-//             : leftState == false &&  rightState == true ? {opacity: "1", transition: "opacity 1000ms", marginLeft: "-925px"}
-//             : leftState == true && rightState == false ?  {opacity: "0", visibility: "hidden", transition: "opacity 1000ms , visibility 1000ms",}
-//             : {opacity: "0", visibility: "hidden", transition: "opacity 1000ms , visibility 1000ms",}}>
-//             <Card style={{width: '750px', height: '730px', paddingTop: '20px', textAlign: 'center'}}>
+//             leftState == true && rightState == true ? {opacity: "1", transition: "opacity 2000ms"}
+//             : leftState == false &&  rightState == true ? {opacity: "1", transition: "opacity 2000ms", marginLeft: "-1920px"}
+//             : leftState == true && rightState == false ?  {opacity: "0", visibility: "hidden", transition: "opacity 2000ms , visibility 2000ms",}
+//             : {opacity: "0", visibility: "hidden", transition: "opacity 2000ms , visibility 2000ms",}}>
 //               <ByDeptEduCost data={byDeptEduCost}></ByDeptEduCost>
-//             </Card>
 //           </WrapContent>
-//           <WrapContent style={
-//             leftState == true && rightState == true ? {opacity: "0", visibility: "hidden", transition: "opacity 3000ms , visibility 3000ms"}
-//             : leftState == true && rightState == false ? {opacity: "1", transition: "opacity 3000ms", marginTop: '-750px'}
-//             : leftState == false && rightState == true ? {opacity: "1", transition: "opacity 3000ms", marginTop: '-750px'}
-//             : {opacity: "0", visibility: "hidden", transition: "opacity 3000ms , visibility 3000ms",}}>
+//           <WrapContent2 style={
+//             leftState == true && rightState == true ? {opacity: "0", visibility: "hidden", transition: "opacity 2000ms , visibility 2000ms"}
+//             : leftState == true && rightState == false ? {opacity: "1", transition: "opacity 2000ms", marginTop: '-70%'}
+//             : leftState == false && rightState == true ? {opacity: "1", transition: "opacity 2000ms", marginTop: '-70%'}
+//             : {opacity: "0", visibility: "hidden", transition: "opacity 2000ms , visibility 2000ms",}}>
 //             <MasterGrid originRows={mastergridData} onSelectData={onMasterGridSelect} ref={masterGridRef}></MasterGrid>
-//           </WrapContent>
+//           </WrapContent2>
 //         </RightGraphContent>
 
 

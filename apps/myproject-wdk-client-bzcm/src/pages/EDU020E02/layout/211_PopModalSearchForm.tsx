@@ -82,13 +82,13 @@ const ModalSearch: React.FC<SearchProps> = forwardRef(({ onSubmit, props,}, ref)
             type={SFType.Selectbox}
             name={'cmplt_yn'}
             label={'수료여부'}
+            labelStyles={{ width: 80 }}
             options={[
               { detail_code_id: "Y", detail_code_name: "완료" },
               { detail_code_id: "N", detail_code_name: "미완료" },
             ]}
             needAlloption={true}
           ></Field> 
-          {/* <Button></Button> */}
         </SearchRow>
       </Form>
     </React.Fragment>

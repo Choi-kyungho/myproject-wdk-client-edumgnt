@@ -15,7 +15,7 @@ import SearchForm from './layout/SearchForm';
 // 좌측 높이(height)가 100%, 넓이가 50%인 영역을 좌측 정렬
 const LeftContent = styled.section`
   float: left;
-  width: 60%;
+  width: 50%;
   height: 100%;
 `;
 

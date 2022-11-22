@@ -7,28 +7,17 @@ type ModalGridProps = {
   originRows?: DetailGridRowDataType[];
   onSelectRow?: (data: DetailGridRowDataType | DetailGridRowDataType[]) => void;
   ref?: React.ReactNode;
+  propsEvn:(el)=> void;
 };
 
 let modalGrid: ESGrid;
 const ModalGrid: React.FC<ModalGridProps> = forwardRef(
-  ({ originRows, onSelectRow }, ref) => {
+  ({ originRows, onSelectRow, propsEvn }, ref) => {
     useImperativeHandle(ref, () => ({
       cleanup() {
         modalGrid.clearnRow();
       },
       confirm() {
-        // if (
-        //   modalGrid.getGridView().displayOptions.selectionStyle === "singleRow"
-        // ) {
-        //   const itemIndex = modalGrid.getGridView().getCurrent().itemIndex;
-        //   const checkedList = [originRows[itemIndex]];
-        //   return checkedList;
-        // } else {
-        //   const rows = modalGrid.getCheckedRows();
-        //   const checkedList = rows.map((rows) => originRows[rows]);
-        //   ``;
-        //   return checkedList;
-        // }
       },
     }));
 
@@ -57,7 +46,8 @@ const ModalGrid: React.FC<ModalGridProps> = forwardRef(
         /**
          * 선택-onCellDblClicked
          */
-        modalGrid.getGridView().onCellDblClicked = function (
+        
+        modalGrid.getGridView().onCellClicked = function (
           grid,
           clickData: { [x: string]: string }
         ) {
@@ -65,10 +55,12 @@ const ModalGrid: React.FC<ModalGridProps> = forwardRef(
           if (typeof row != "number") return;
           if (row > -1) {
             const rowInfo = grid.getCurrent();
+            console.log("DBCLICK: "+JSON.stringify(rowInfo));
             const rowVal: DetailGridRowDataType = grid
               .getDataSource()
               .getJsonRow(rowInfo.dataRow, true);
             onSelectRow(rowVal);
+            propsEvn(rowVal);
           }
         };
       }

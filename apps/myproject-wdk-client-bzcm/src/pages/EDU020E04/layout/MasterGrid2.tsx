@@ -1,21 +1,13 @@
-import { ESGrid, getDate, GridHdBtnType, GridHeader, userInfoGlobalState, useConfirm } from '@vntgcorp/vntg-wdk-client';
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { GridConfig } from './MasterGrid_Config';
+import { ESGrid, getDate, GridHdBtnType, GridHeader, userInfoGlobalState } from '@vntgcorp/vntg-wdk-client';
+import React, { useEffect, useState } from 'react';
+import { GridConfig } from './MasterGrid2_Config';
 import { v4 as uuid } from 'uuid';
-import { getUniqueValue } from '@vntgcorp/vntg-wdk-client';
 
 type MasterGridProps = {
   originRows: Array<any>;
   onSelectData: (value) => void;
   /**  */
 };
-
-const dumyData = [
-  {
-    emp_name: 'Tester',
-    exec_ctnt: '테스트 등록 관련 입력을 했습니다.',
-  },
-];
 
 type GridForwardFunc = {
   cleanup: () => void;
@@ -36,17 +28,7 @@ const MasterGrid = React.forwardRef<GridForwardFunc, MasterGridProps>(({ originR
     },
     changeData(name, value) {
       if (selectedRowIndex != null) {
-        if (name == 'close_yn@@Y') {
-          const inputData = name.split('@@');
-
-          if (value.toString() == 'true') {
-            masterGrid.current.setValue(selectedRowIndex, inputData[0], 'Y');
-          } else {
-            masterGrid.current.setValue(selectedRowIndex, inputData[0], 'N');
-          }
-        } else {
-          masterGrid.current.setValue(selectedRowIndex, name, value);
-        }
+        masterGrid.current.setValue(selectedRowIndex, name, value);
       }
     },
   }));
@@ -54,10 +36,9 @@ const MasterGrid = React.forwardRef<GridForwardFunc, MasterGridProps>(({ originR
   const [selectedRowIndex, setSelectedRowIndex] = useState<number>(null);
 
   React.useEffect(() => {
-    masterGrid.current = new ESGrid('EDU000E04GRID');
+    masterGrid.current = new ESGrid('EDU000E02GRID2');
     masterGrid.current.initializeGrid(GridConfig, originRows);
-    // masterGrid.current.setBoolColumn('close_yn', 'N', false);
-
+    masterGrid.current.setBoolColumn('use_yn', 'Y', true);
     masterGrid.current.setRows(originRows);
 
     masterGrid.current.onCurrentRowChanged((row) => {
@@ -74,17 +55,15 @@ const MasterGrid = React.forwardRef<GridForwardFunc, MasterGridProps>(({ originR
     masterGrid.current.setRows(originRows);
   }, [originRows]);
 
+  // + 버튼 눌렀을때 기본값 세팅
+  // MasterGrid.tsx에선 아래 초기화 값 부분만 변경하고 나머지는 공통이기 때문에 따로 수정하지 않아도 된다.
   const gridBtnEvent = (type: any) => {
     switch (type) {
       case GridHdBtnType.plus: {
-        const thisYear = new Date().getFullYear();
         masterGrid.current.insertRow({
-          edu_schedule_no: getUniqueValue(),
-          edu_year: thisYear,
-          edu_from_dt: new Date(thisYear, 0),
-          edu_to_dt: new Date(thisYear, 11, 31),
-          close_yn: 'N',
-          rmk: null,
+          edu_year: null,
+          cls: '',
+          edu_cost: '',
         });
         break;
       }
@@ -96,6 +75,7 @@ const MasterGrid = React.forwardRef<GridForwardFunc, MasterGridProps>(({ originR
       case GridHdBtnType.reflash: {
         masterGrid.current.getGridView().cancel();
         masterGrid.current.setRows(originRows);
+        console.log('reflash');
         break;
       }
       default:
@@ -104,8 +84,8 @@ const MasterGrid = React.forwardRef<GridForwardFunc, MasterGridProps>(({ originR
   };
   return (
     <div className="grid">
-      <GridHeader title={'교육일정 목록'} type="default" gridBtnEvent={gridBtnEvent} />
-      <div className="realGrid" id="EDU000E04GRID"></div>
+      <GridHeader title={'부서별교육비현황'} type="default"/>
+      <div className="realGrid" id="EDU000E02GRID2"></div>
     </div>
   );
 });

@@ -12,6 +12,8 @@
     /*
     * 마스터 그리드 조회 Api Call
     */
+
+    //연도별 교육비현황 차트
     retrieve1 = async (searchValue) => {
       const config = {
         url: "/api/bzcm/EDU020E04/byYearEduCostList/",
@@ -23,6 +25,7 @@
       return this.httpRequest(config);
     };
 
+    //부서별 교육비현황 차트
     retrieve2 = async (searchValue) => {
       const config = {
         url: "/api/bzcm/EDU020E04/byDeptEduCostList/",
@@ -34,22 +37,13 @@
       return this.httpRequest(config);
     };
 
-    retrieve3 = async (searchValue) => {
-      const config = {
-        url: "/api/bzcm/EDU020E04/byEmpEduCostList/",
-        params: {
-          p_use_yn: 'Y',
-          p_edu_year:searchValue.EDU_YEAR
-        },
-      };
-      return this.httpRequest(config);
-    };
-
+    //연도별 교육비현황 그리드
     retrieveGrid1 = async (searchValue) => {
       const config = {
         url: "/api/bzcm/EDU020E04/byYearEduCostList_Grid1/",
         params: {
           p_use_yn: 'Y',
+          p_edu_year:searchValue.EDU_YEAR
         },
       };
       return this.httpRequest(config);

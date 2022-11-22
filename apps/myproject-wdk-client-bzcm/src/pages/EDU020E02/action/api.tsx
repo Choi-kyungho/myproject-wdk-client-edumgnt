@@ -57,7 +57,6 @@
     };
 
     retriveModal = async (searchValue) => {
-      console.log("api 조회조건====>"+JSON.stringify(searchValue));
       
       const config = {
         url: "/api/bzcm/EDU020E02/eduListGrid/",
@@ -68,6 +67,21 @@
           p_edu_year: searchValue.p_edu_year,
           p_cmplt_yn: searchValue.p_cmplt_yn,
           p_emp_no: searchValue.p_emp_no,
+        },
+      };
+      return this.httpRequest(config);
+    };
+
+    mailSendModal = async (mailInfo) => {
+      
+      const config = {
+        url: "/api/bzcm/EDU020E02/eduEmailSend/",
+        params: {
+          p_email: mailInfo.email,
+          p_edu_year: mailInfo.edu_year,
+          p_edu_plan_hour: mailInfo.edu_plan_hour,
+          p_edu_cmplt_hour: mailInfo.edu_cmplt_hour,
+          p_edu_cmplt_rate: mailInfo.edu_cmplt_rate,
         },
       };
       return this.httpRequest(config);

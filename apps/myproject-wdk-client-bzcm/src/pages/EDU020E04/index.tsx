@@ -7,39 +7,76 @@ import ByYearEduCost from './layout/ByYearEduCost';
 import ByDeptEduCost from './layout/ByDeptEduCost';
 import SearchForm from './layout/SearchForm';
 import MasterGrid from './layout/MasterGrid';
+import MasterGrid2 from './layout/MasterGrid2';
 import {
   Card,
 } from "@material-ui/core";
 
-  const WrapContent = styled.section`
-`;
-
-const WrapContent2 = styled.section`
-  width: 100%;
-  height: 750px;
-  margin-top: 1000px;
-`;
-
-const WrapContent3 = styled.section`
-  width: 100%;
-  height: 750px;
-  margin-top: 1000px;
-`;
-
-  const LeftGraphContent = styled.section`
-      float: left;
-      width: 50%;
-      height: 100%;
-      padding-left: 30px;
-      padding-top: 70px;
-    `;
-
-    const RightGraphContent = styled.section`
-    float: left;
-    width: 47%;
+const WrapMaster = styled.section`
+    width: 100%;
     height: 100%;
-    padding-top: 70px;
-  `;
+    padding-left: 2%;
+    padding-right: 2%;
+`;
+
+
+const TopTitle = styled.section`
+  text-align: center;
+  height: 10%;
+  width: 100%;
+  padding-top: 2%;
+`;
+
+const LeftTopContent = styled.section`
+    float: left;
+    height: 40%;
+    width: 50%;
+    padding-top: 2%;
+`;
+
+const RightTopContent = styled.section`
+    float: right;
+    height: 40%;
+    width: 50%;
+    padding-top: 2%;
+`;
+
+const BottomTitle = styled.section`
+  text-align: center;
+  height: 10%;
+  width: 100%;
+  padding-top: 2%;
+`;
+
+const LeftBottomContent = styled.section`
+    float: left;
+    height: 40%;
+    width: 50%;
+    margin-top: 7%;
+`;
+
+const RightBottomContent = styled.section`
+    float: right;
+    height: 40%;
+    width: 50%;
+    margin-top: 7%;
+`;
+
+const LeftBottomContent2 = styled.section`
+    float: left;
+    height: 40%;
+    width: 50%;
+    margin-top: 7%;
+`;
+
+const RightBottomContent2 = styled.section`
+    float: right;
+    height: 40%;
+    width: 50%;
+    margin-top: 7%;
+`;
+
+
   
 const EDU020E02 = () => {
 
@@ -56,137 +93,73 @@ const EDU020E02 = () => {
     };
 
      const onRetrive = () => {
+
         const searchValue = searchFormRef.current.submit();
-        // 연도별 교육비
+        // 전체 교육비 현황 (연도별) - BAR 차트
         apiCall.retrieve1(searchValue).then(response=>{
           setbyYearEduCost(response.data);
         });
 
-        // 부서별 교육비
+        // 부서별 교육비 (부서별) - BAR 차트
         apiCall.retrieve2(searchValue).then(response=>{
           setbyDeptEduCost(response.data);
         });
 
-        // 사원별 교육비
-        apiCall.retrieve3(searchValue).then(response=>{
-          setbyEmpEduCost(response.data);
-        });
-
-        // 사원별 교육비
         apiCall.retrieveGrid1(searchValue).then(response=>{
           setMastergridData(response.data);
         });
 
-        
+        apiCall.retrieveGrid2(searchValue).then(response=>{
+          setMastergridData2(response.data);
+          console.log(response.data);
+        });
+
      }
-
-     const onRetrive_Grid1 = () => {
-      const searchValue = searchFormRef.current.submit();
-
-      // 사원별 교육비
-      apiCall.retrieveGrid1(searchValue).then(response=>{
-        setMastergridData(response.data);
-        console.log(response.data);
-      });
-      
-    }
-
-    const onRetrive_Grid2 = () => {
-      const searchValue = searchFormRef.current.submit();
-
-      apiCall.retrieveGrid2(searchValue).then(response=>{
-        setMastergridData(response.data);
-        console.log(response.data);
-      });
-
-      
-    }
 
      const masterGridRef = useRef(null);
      const [mastergridData, setMastergridData] = useState([]);
-    
-    // React.useEffect(()=>{
-    //   const searchValue = 'N'
 
-    //   // 연도별 교육비
-    //   apiCall.retrieve1(searchValue).then(response=>{
-    //     setbyYearEduCost(response.data);
-    //   });
-
-    //   // 부서별 교육비
-    //   apiCall.retrieve2(searchValue).then(response=>{
-    //     setbyDeptEduCost(response.data);
-    //   });
-
-    //   // 사원별 교육비
-    //   apiCall.retrieve3(searchValue).then(response=>{
-    //     setbyEmpEduCost(response.data);
-    //   });
-    // },[])
+     const masterGridRef2 = useRef(null);
+     const [mastergridData2, setMastergridData2] = useState([]);
   
     useEffect(() => {
       onRetrive();
-      setShow(true);
     }, []);
-
-    
 
     const onCleanup = () => {
       searchFormRef.current.cleanup();
-      setShow(true);
-      setLeftState(true);
-      setRightState(true);
     };
 
     const onChangeEduYear = () => {
       onRetrive();
     };
 
-    const showCase1 = () => {
-      setLeftState(true);
-      setRightState(false);
-      onRetrive_Grid1(); 
-    }
-
-    const showCase2 = () => {
-      setLeftState(false);
-      setRightState(true);
-      onRetrive_Grid2(); 
-    }
-  
-    const [show, setShow] = useState(false);
-    const [leftState, setLeftState] = useState(true);
-    const [rightState, setRightState] = useState(true);
-
     return <>
       <Title onCleanup={onCleanup} useSave={false} onRetrive={onRetrive}></Title>
       <SearchForm ref={searchFormRef} onChangeEduYear={onChangeEduYear}></SearchForm>
+      <WrapMaster>
+        {/********** 전체교육비(연도별) 교육비 현황 ***********/}
+        <TopTitle>
+          <p style={{fontSize:'45px', fontWeight: '500', textDecoration: 'underline',textDecorationColor:'#2271B1', textUnderlinePosition: 'under'}}>전체 교육비 현황</p>
+        </TopTitle>
+        <LeftTopContent>
+          <ByYearEduCost data={byYearEduCost}></ByYearEduCost>
+        </LeftTopContent>
+        <RightTopContent>
+          <MasterGrid originRows={mastergridData} onSelectData={onMasterGridSelect} ref={masterGridRef}></MasterGrid>
+        </RightTopContent>
+        {/*****************************************************/}
 
-        <WrapContent style={leftState == true ? 
-        {opacity: "1", transition: "opacity 1200ms"}: 
-        {opacity: "0", visibility: "hidden", transition: "opacity 1200ms , visibility 1200ms",}}>
-          <LeftGraphContent onClick={showCase1}>
-              <ByYearEduCost data={byYearEduCost}></ByYearEduCost>
-          </LeftGraphContent>
-        </WrapContent>
-      
-        <RightGraphContent onClick={showCase2}>
-          <WrapContent style={
-            leftState == true && rightState == true ? {opacity: "1", transition: "opacity 2000ms"}
-            : leftState == false &&  rightState == true ? {opacity: "1", transition: "opacity 2000ms", marginLeft: "-1920px"}
-            : leftState == true && rightState == false ?  {opacity: "0", visibility: "hidden", transition: "opacity 2000ms , visibility 2000ms",}
-            : {opacity: "0", visibility: "hidden", transition: "opacity 2000ms , visibility 2000ms",}}>
-              <ByDeptEduCost data={byDeptEduCost}></ByDeptEduCost>
-          </WrapContent>
-          <WrapContent2 style={
-            leftState == true && rightState == true ? {opacity: "0", visibility: "hidden", transition: "opacity 2000ms , visibility 2000ms"}
-            : leftState == true && rightState == false ? {opacity: "1", transition: "opacity 2000ms", marginTop: '-70%'}
-            : leftState == false && rightState == true ? {opacity: "1", transition: "opacity 2000ms", marginTop: '-70%'}
-            : {opacity: "0", visibility: "hidden", transition: "opacity 2000ms , visibility 2000ms",}}>
-            <MasterGrid originRows={mastergridData} onSelectData={onMasterGridSelect} ref={masterGridRef}></MasterGrid>
-          </WrapContent2>
-        </RightGraphContent>
 
+        {/********** 부서별 교육비 현황 ***********************/}
+        <LeftBottomContent>
+          <ByDeptEduCost data={byDeptEduCost}></ByDeptEduCost>
+        </LeftBottomContent>
+        <RightBottomContent>
+          <MasterGrid2 originRows={mastergridData2} onSelectData={onMasterGridSelect} ref={masterGridRef2}></MasterGrid2>
+        </RightBottomContent>
+        {/*****************************************************/}
+      </WrapMaster>
 
 
     </>

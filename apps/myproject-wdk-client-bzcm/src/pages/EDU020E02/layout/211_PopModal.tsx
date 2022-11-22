@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { MouseEventHandler, useRef, useState } from 'react';
 import { ModalTitle } from '@vntgcorp/vntg-wdk-client';
 import ModalSearch from './211_PopModalSearchForm';
 import ModalGrid from './211_PopModalGrid';
@@ -9,6 +9,11 @@ import { IResData as IHttpResData, useSyncHttpCient } from '@vntgcorp/vntg-wdk-c
 import ApiCall from '../action/api';
 import { warning } from '@vntgcorp/vntg-wdk-client';
 import _ from 'lodash';
+//import Button from '@mui/material/core';
+import {
+  Button
+} from "@material-ui/core";
+import SendIcon from '@material-ui/core';
 
 const ModalSearchWrap = styled.section`
     padding-top:10px;
@@ -30,15 +35,66 @@ const PopModal: React.FC<PopModalProps> = ({ onModalClose, selectDataValue, deta
   const [modalVisible, setModalVisible] = useState(true);
   const [modalRows, setModalRows] = useState([]);
 
+  const [mailInfo, setMailInfo] = useState({});
+  const [sendResult, setSendResult] = useState({});
+
   // eslint-disable-next-line no-empty-pattern
   const [{}, fetchRequest] = useSyncHttpCient<IHttpResData>();
   const [api] = useState(new ApiCall(fetchRequest));
 
+
   const selectRow = (data: DetailGridRowDataType[]) => {
-    onModalClose();
-    setModalVisible(false);
-    selectDataValue(data);
+    // console.log('data===>'+JSON.stringify(data));
+
+    // setMailInfo(data);
+
+    // console.log('보내기전==>'+JSON.stringify(mailInfo));
+    // clickEvent();
   };
+
+
+  const useConfirm = (message = null, onConfirm, onCancel) => {
+    if (!onConfirm || typeof onConfirm !== "function") {
+      return;
+    }
+    if (onCancel && typeof onCancel !== "function") {
+      return;
+    }
+  
+    const confirmAction = () => {
+      if (window.confirm(message)) {
+        onConfirm();
+      } else {
+        onCancel();
+      }
+    };
+  
+    return confirmAction;
+  };
+
+  const deleteConfirm = () => {
+    console.log(JSON.stringify(mailInfo));
+    alert("메일이 전송되었습니다.");
+    api.mailSendModal(mailInfo).then((res) => {
+    });
+  }
+
+  const cancelConfirm = () => {
+    alert("취소했습니다.");
+  }
+
+  const confirmDelete = useConfirm(
+    "선택된 사원에게 메일을 전송하시겠습니까?",
+    deleteConfirm,
+    cancelConfirm
+  );
+
+  const eventTest = (el) =>{
+    setMailInfo(el);
+  }
+
+  React.useEffect(() => {
+  }, [mailInfo]);
 
   const onCleanup = () => {
     modalSearchRef.current.cleanup();
@@ -65,7 +121,6 @@ const PopModal: React.FC<PopModalProps> = ({ onModalClose, selectDataValue, deta
 
   const onSubmit = (data: FormProps) => {
 
-    console.log("onSubmit===>"+JSON.stringify(data));
     /**
      * search_text: 그룹 명
      */
@@ -107,6 +162,7 @@ const PopModal: React.FC<PopModalProps> = ({ onModalClose, selectDataValue, deta
     });
   };
 
+
   const onClose = () => {
     onModalClose();    
     setModalVisible(false);
@@ -117,8 +173,9 @@ const PopModal: React.FC<PopModalProps> = ({ onModalClose, selectDataValue, deta
     onSubmit_first(searchParam);
   },[])
 
+  
+
   return (
-    // 모달이 열릴때 openModal 클래스가 생성된다.
     <div className={modalVisible ? 'openModal programSearchModal' : 'programSearchModal'}>
       {modalVisible && (
         <section>
@@ -132,7 +189,11 @@ const PopModal: React.FC<PopModalProps> = ({ onModalClose, selectDataValue, deta
           ></ModalTitle>
           <main>
             <ModalSearch onSubmit={onSubmit} ref={modalSearchRef} props={searchParam}></ModalSearch>
-            <ModalGrid originRows={modalRows} onSelectRow={selectRow} ref={modalRef}></ModalGrid>
+            <ModalGrid originRows={modalRows} onSelectRow={selectRow} ref={modalRef} propsEvn={eventTest}></ModalGrid>
+             <Button variant="contained" onClick={confirmDelete} 
+             style={{float:'right', width:'120px', marginTop:'15px', marginBottom: '15px', backgroundColor: 'orange', fontWeight:'bold', color: '#FFFFFF'}}>
+              메일발송
+            </Button>
           </main>
         </section>
       )}

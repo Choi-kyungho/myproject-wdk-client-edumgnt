@@ -61,7 +61,7 @@ export const GridConfig = [
     visible: true,
     headerText: '비고',
     editable: true,
-    width: 400,
+    width: 290,
   },
   {
     fieldName: 'first_rg_yms',

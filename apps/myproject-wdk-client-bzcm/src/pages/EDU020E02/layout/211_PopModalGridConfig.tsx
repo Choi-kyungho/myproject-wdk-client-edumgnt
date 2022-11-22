@@ -65,6 +65,13 @@ export const Config = [
     width: 110,
   },
   {
+    fieldName: 'email',
+    dataType: ValueType.TEXT,
+    visible: false,
+    headerText: '이메일',
+    width: 110,
+  },
+  {
     fieldName: 'first_rg_yms',
     dataType: ValueType.TEXT,
     visible: false,
