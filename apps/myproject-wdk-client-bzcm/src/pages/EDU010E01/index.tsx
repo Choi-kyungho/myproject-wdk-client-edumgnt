@@ -240,7 +240,6 @@ const EDU010E01 = (props: Props) => {
     apiCall.retrieve(searchValue).then((response) => {
       // 조회api 함수에서 받아온 데이터를 MasterGrid로 전달하기 위해 setMastergridData 훅에 담음
       setMastergridData(response.data);
-      alert(response.success);
       // 알림 메시지
       if (response.success) {
         Notify.retrive();
