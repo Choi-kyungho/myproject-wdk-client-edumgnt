@@ -31,6 +31,37 @@ export default class ApiCall {
     return this.httpRequest(config);
   };
 
+  retrieveGraphFirst = async (searchValue) => {
+    console.log('Action retrieveGraphFirst ::: bugt_year ::: ' + searchValue.bugt_year);
+    //console.log('Action retrieveGraphFirst ::: dept_code ::: ' + searchValue.dept_code);
+
+    const config = {
+      url: '/api/bzcm/EDU000E06/listGraphFirst/',
+      params: {
+        // API에서 사용할 조회파라미터 설정
+        // 파라미터 추가/수정/삭제시 최경호에게 전달
+        p_bugt_year: searchValue.bugt_year,
+      },
+    };
+    return this.httpRequest(config);
+  };
+
+  retrieveGraph = async (searchValue) => {
+    console.log('Action Retrive Master Grid ::: bugt_year ::: ' + searchValue.bugt_year);
+    console.log('Action Retrive Master Grid ::: dept_code ::: ' + searchValue.dept_code);
+
+    const config = {
+      url: '/api/bzcm/EDU000E06/listGraph/',
+      params: {
+        // API에서 사용할 조회파라미터 설정
+        // 파라미터 추가/수정/삭제시 최경호에게 전달
+        p_bugt_year: searchValue.bugt_year,
+        p_dept_code: searchValue.dept_code,
+      },
+    };
+    return this.httpRequest(config);
+  };
+
   // 저장 API 함수
   saveData = async (master) => {
     const config = {

@@ -74,7 +74,6 @@ export type MasterGridProps = {
 export type SearchProps = {
   onChangeEduYear: (name, value) => void;
   ref: ReactNode;
-  button: string;
 };
 
 type Handler = {

@@ -12,34 +12,23 @@ import {
 } from "@material-ui/core";
 
 const MainContent = styled.section`
-width: 80%;
-text-align: center;
-padding-left: 250px;
-padding-top: 30px;
+  width: 100%;
+  height: 100%;
+  padding-top: 2%;
+  padding-left: 2%;
+  padding-right: 2%;
 `;
 
 const TopContent = styled.section`
-padding-top: 10px;
+  padding-top: 10px;
+  padding-left: 1%;
+  padding-right: 1%;
 `;
 
 const BottomContent = styled.section`
-padding-top: 20px;
-margin-top: 40px;
+  padding-top: 20px;
+  margin-top: 40px;
 `;
-
-
-const LeftContent = styled.section`
-width: 48%;
-float: left;
-padding-top: 10px;
-`;
-const RightContent = styled.section`
-width: 48%;
-float: right;
-padding-top: 10px;
-`;
-
-
 
 type Props = {}
 
@@ -79,7 +68,7 @@ const EDU040E01 = () => {
   return (   
     <>
       <MainContent>
-        {!show && <CircularProgress style={{width:'150px', height:'150px', marginTop: '25%', textAlign:'center'}}/>} 
+        {!show && <CircularProgress style={{width:'150px', height:'150px', marginTop: '17%', marginLeft: '46%', textAlign:'center'}}/>} 
         {!show && <DataLoading></DataLoading>}
         {show && <EduListHeader title="실시간 교육 TOP 10"></EduListHeader>}
         <TopContent>
@@ -87,7 +76,7 @@ const EDU040E01 = () => {
         </TopContent>
         <BottomContent>
           <EduList5to10 data={crawlingData2}></EduList5to10>
-        </BottomContent>
+        </BottomContent> 
       </MainContent>
     </>
   )

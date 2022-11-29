@@ -8,32 +8,33 @@ import ByJobCount from './layout/ByJobCount';
 import ByRespCount from './layout/ByRespCount';
 
 import PopModal from "./layout/211_PopModal";
+
+    const WrapMaster = styled.section`
+    width: 100%;
+    height: 100%;
+    padding-left: 2%;
+    padding-right: 2%;
+    `;
+
     /* 
     화면 스타일 선언 */
     const TopContent = styled.section`
-    float: center;
-    width: 100%;
-    height: 50%;
+    height: 45%;
   `;
     const LeftContent = styled.section`
     float: left;
     width: 50%;
-    height: 50%;
-    padding-left: 30px;
+    height: 45%;
+    margin-top: 1.5%;
   `;
   const RightContent = styled.section`
     float: right;
-    width: 50%;
-    height: 50%;
+    width: 45%;
+    height: 45%;
+    margin-top: 1.5%;
   `;
 
 const EDU020E01 = () => {
-    // const dataTmp = [
-    //   { id: 'ERP운영팀', value: 324, row_stat: 'unchanged'},
-    //   { id: '정보보호팀', value: 88, row_stat: 'unchanged'},
-    //   { id: '사업1팀', value: 221, row_stat: 'unchanged'},
-    //   { id: '사업2팀', value: 123, row_stat: 'unchanged'},
-    // ]; 
   
     const [, fetchRequest] = useSyncHttpCient<IResData>();
     const apiCall = new ApiCall(fetchRequest);
@@ -81,41 +82,40 @@ const EDU020E01 = () => {
 ​
     // 모달 On
     const onModalDisplay_fromDept = ((el) => {
-      console.log("onModalDisplay param ===>"+JSON.stringify(el.data.dept_code));
       setSearchParam(el.data);
       onAddData(); 
     });
 
     const onModalDisplay_fromJob = ((el) => {
-      console.log("onModalDisplay_fromJob param ===>"+JSON.stringify(el.data.job));
       setSearchParam(el.data);
       onAddData(); 
     });
 
     const onModalDisplay_fromResp = ((el) => {
-      console.log("onModalDisplay_fromResp param ===>"+JSON.stringify(el.data.responsi));
       setSearchParam(el.data);
       onAddData(); 
     });
 
     return <>
       <Title useCleanup={false} useRetrive={false} useSave={false}></Title>
-      <TopContent>
-        <TotalCount data={totalCnt} onModalDisplay={onModalDisplay_fromDept}></TotalCount>
-      </TopContent>
-      <LeftContent onClick={onAddData}>
-        <ByJobCount data={byJobCnt} onModalDisplay={onModalDisplay_fromJob}></ByJobCount>
-      </LeftContent>
-      <RightContent onClick={onAddData}>
-        <ByRespCount data={byRespCnt} onModalDisplay={onModalDisplay_fromResp}></ByRespCount>
-      </RightContent>
-      {isOpenModal && (
-        <PopModal
-          onModalClose={closeAddData}
-          detailRows={detailRows}
-          searchParam={searchParam}
-        ></PopModal>
-      )}
+      <WrapMaster>
+        <TopContent>
+          <TotalCount data={totalCnt} onModalDisplay={onModalDisplay_fromDept}></TotalCount>
+        </TopContent>
+        <LeftContent onClick={onAddData}>
+          <ByJobCount data={byJobCnt} onModalDisplay={onModalDisplay_fromJob}></ByJobCount>
+        </LeftContent>
+        <RightContent onClick={onAddData}>
+          <ByRespCount data={byRespCnt} onModalDisplay={onModalDisplay_fromResp}></ByRespCount>
+        </RightContent>
+        {isOpenModal && (
+          <PopModal
+            onModalClose={closeAddData}
+            detailRows={detailRows}
+            searchParam={searchParam}
+          ></PopModal>
+        )}
+      </WrapMaster>
     </>
 };
 

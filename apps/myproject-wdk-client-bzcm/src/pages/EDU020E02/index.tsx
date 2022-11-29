@@ -12,50 +12,33 @@ import PopModal from "./layout/211_PopModal";
     /* 
     화면 스타일 선언 */
     const MainContent = styled.section`
-    width: 70%;
-    margin-left: 130px;
-    margin-right: 180px;
-    padding-top: 15px;
+    width: 100%;
+    height: 100%;
+    padding-left: 2%;
+    padding-right: 2%;
     `;
 
     const LeftContent1 = styled.section`
     float: left;
     width: 47%;
     height: 50%;
-    margin-left: 20px;
-    padding-bottom: 30px;
-    margin-bottom: 50px;
   `;
     const RightContent1 = styled.section`
     float: right;
-    width: 35%;
+    width: 47%;
     height: 50%;
-    margin-bottom: 50px;
   `;
   const LeftContent2 = styled.section`
     float: left;
+    width: 47%;
     height: 50%;
-    margin-left: 20px;
-    margin-top: 20px;
+    margin-top: 10%;
   `;
     const RightContent2 = styled.section`
     float: right;
-    width: 35%;
+    width: 47%;
     height: 50%;
-    margin-top: 20px;
-  `;
-
-  const LeftContent3 = styled.section`
-    float: left;
-    height: 50%;
-    margin-left: 20px;
-    margin-top: 80px;
-  `;
-    const RightContent3 = styled.section`
-    float: right;
-    width: 35%;
-    height: 50%;
-    margin-top: 80px;
+    margin-top: 10%;
   `;
 
 const EDU020E02 = () => {
@@ -160,7 +143,7 @@ const EDU020E02 = () => {
 
     return <>
       <Title onCleanup={onCleanup} useSave={false} onRetrive={onRetrive}></Title>
-      <SearchForm ref={searchFormRef} onChangeEduYear={onChangeEduYear} button={'123'}></SearchForm>
+      <SearchForm ref={searchFormRef} onChangeEduYear={onChangeEduYear} ></SearchForm>
       <MainContent>
       <LeftContent1>
           <LeftContentGraph1 data={byYearEduTime} onModalDisplay={onModalDisplay_fromYear}></LeftContentGraph1>

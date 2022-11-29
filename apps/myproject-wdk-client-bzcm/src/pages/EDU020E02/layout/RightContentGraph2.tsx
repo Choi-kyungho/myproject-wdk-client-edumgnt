@@ -24,7 +24,7 @@ const RightContentGraph2 = ({ data, onModalDisplay }: PropsType )  => {
         
         // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정
 
-        <div style={{ width: '800px', height: '450px', paddingTop: '100px'}}>
+        <div style={{ width: '100%', height: '100%'}}>
             <ResponsiveBar
                 /**
                  * 
@@ -32,6 +32,7 @@ const RightContentGraph2 = ({ data, onModalDisplay }: PropsType )  => {
                  */
                 layout='horizontal'
                 data={data}
+                valueFormat=" >-,"
                 /**
                  * chart에 보여질 데이터 key (측정되는 값)
                  */
@@ -51,7 +52,7 @@ const RightContentGraph2 = ({ data, onModalDisplay }: PropsType )  => {
                 /**
                  * chart 색상
                  */
-                colors={['#28B0CB' ]} // 커스터하여 사용할 때
+                colors={['#FFE5D7', '#FF9E88', '#FF3D3A', '#B71D35']} // 커스터하여 사용할 때
                 // colors={{ scheme: 'nivo' }} // nivo에서 제공해주는 색상 조합 사용할 때
                 /**
                  * color 적용 방식

@@ -5,6 +5,8 @@ import ApiCall from './action/api';
 import DetailForm from './layout/DetailForm';
 import MasterGrid from './layout/MasterGrid';
 import SearchForm from './layout/SearchForm';
+import Piechart from './layout/Piechart';
+import { error, success, warning } from '@vntgcorp/vntg-wdk-client';
 
 /* 
     화면 스타일 선언 */
@@ -22,7 +24,7 @@ const LeftContent = styled.section`
 // 우측: 높이(height)가 100%, 넓이가 50%인 영역을 우측 정렬
 const RightContent = styled.section`
   float: right;
-  width: 40%;
+  width: 50%;
   height: 100%;
 `;
 
@@ -74,6 +76,7 @@ const EDU000E06 = (props: Props) => {
   //         이 변수를 HOOK 이라고 함
 
   const [mastergridData, setMastergridData] = useState([]);
+  const [graphData, setGraphData] = useState([]);
 
   // 저장 함수
   const onSave = () => {
@@ -81,14 +84,19 @@ const EDU000E06 = (props: Props) => {
 
     // saveData는 api.ts에 있는 saveData 저장api함수
     // 저장 api함수 호출 후 조회함수 재호출
-    apiCall.saveData(saveData).then(() => {
-      Notify.update();
-      onRetrive();
+    apiCall.saveData(saveData).then((response) => {
+      if (response.success) {
+        Notify.update();
+        onRetrive();
+      } else {
+        warning(response.message);
+      }
     });
   };
 
   // 조회 함수
   const onRetrive = () => {
+
     // 현재 조회파라미터들을 searchValue 변수에 담아서 조회함수에 파라미터로 전달
     const searchValue = SearchFormRef.current.submit();
 
@@ -103,7 +111,20 @@ const EDU000E06 = (props: Props) => {
         Notify.notfound();
       }
     });
+    
+    const firstSearch = {
+      bugt_year : '2022',
+      dept_code : '%',
+    }
+    apiCall.retrieveGraphFirst(firstSearch).then((response) => {
+      // 조회api 함수에서 받아온 데이터를 MasterGrid로 전달하기 위해 setMastergridData 훅에 담음
+      setGraphData(response.data);
+    });
   };
+
+  React.useEffect(()=>{
+    onRetrive();
+  }, []);
 
   // 조회, 저장 이후 각 Ref를 초기화
   const onCleanup = () => {
@@ -116,7 +137,6 @@ const EDU000E06 = (props: Props) => {
   // 마스터그리드의 row를 선택하면 디테일그리드에 값이 세팅된다
   // onMasterGridSelect는 재정의할 필요없이 각 화면에 그대로 사용하면 된다
   const onMasterGridSelect = (value) => {
-    detailFormRef.current.changeData(value);
   };
 
   // 디테일그리드에 데이터변화가 일어났을 때 이벤트
@@ -124,6 +144,13 @@ const EDU000E06 = (props: Props) => {
   // onDetailDataChange 재정의할 필요없이 각 화면에 그대로 사용하면 된다
   const onDetailDataChange = (name, value) => {
     masterGridRef.current.changeData(name, value);
+  };
+
+  const onSelectMasterRow = (data) => {
+    apiCall.retrieveGraph(data).then((response) => {
+      // 조회api 함수에서 받아온 데이터를 MasterGrid로 전달하기 위해 setMastergridData 훅에 담음
+      setGraphData(response.data);
+    });
   };
 
   return (
@@ -138,10 +165,10 @@ const EDU000E06 = (props: Props) => {
                     onSelectData ==> 마스터그리드를 클릭했을 때 이벤트를 지정 (각 화면마다 동일)
                     ref ==> 마스터그리드에서 사용할 파라미터 
                 */}
-        <MasterGrid originRows={mastergridData} onSelectData={onMasterGridSelect} ref={masterGridRef}></MasterGrid>
+        <MasterGrid originRows={mastergridData} onSelectData={onMasterGridSelect} ref={masterGridRef} onSelectRow={onSelectMasterRow}></MasterGrid>
       </LeftContent>
       <RightContent>
-        <DetailForm ref={detailFormRef} onChangeData={onDetailDataChange}></DetailForm>
+        <Piechart data={graphData}></Piechart>
       </RightContent>
     </>
   );

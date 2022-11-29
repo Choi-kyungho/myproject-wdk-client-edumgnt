@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import ApiCall from './action/api';
 import MasterGrid from './layout/MasterGrid';
 import SearchForm from './layout/SearchForm';
+import { error, success, warning } from '@vntgcorp/vntg-wdk-client';
 
 /* 
     화면 스타일 선언 */
@@ -79,9 +80,13 @@ const EDU000E05 = (props: Props) => {
 
     // saveData는 api.ts에 있는 saveData 저장api함수
     // 저장 api함수 호출 후 조회함수 재호출
-    apiCall.saveData(saveData).then(() => {
-      Notify.update();
-      onRetrive();
+    apiCall.saveData(saveData).then((response) => {
+      if (response.success) {
+        Notify.update();
+        onRetrive();
+      } else {
+        warning(response.message);
+      }
     });
   };
 

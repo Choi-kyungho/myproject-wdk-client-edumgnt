@@ -49,12 +49,29 @@
       return this.httpRequest(config);
     };
 
+    //부서별 교육비현황 그리드
     retrieveGrid2 = async (searchValue) => {
       const config = {
         url: "/api/bzcm/EDU020E04/byDeptEduCostList_Grid1/",
         params: {
           p_use_yn: 'Y',
           p_edu_year:searchValue.EDU_YEAR
+        },
+      };
+      return this.httpRequest(config);
+    };
+
+    //부서별 교육비현황 모달 그리드
+    retriveModalGrid = async (searchValue) => {
+
+      console.log("api=====>"+JSON.stringify(searchValue));
+      const config = {
+        url: "/api/bzcm/EDU020E04/eduCostList_ModalGrid/",
+        params: {
+          p_use_yn: 'Y',
+          p_edu_year:searchValue.p_edu_year,
+          p_dept_code:searchValue.p_dept_code,
+          p_emp_name:searchValue.p_emp_name,
         },
       };
       return this.httpRequest(config);

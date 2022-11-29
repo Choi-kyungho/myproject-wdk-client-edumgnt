@@ -8,6 +8,7 @@ import ByDeptEduCost from './layout/ByDeptEduCost';
 import SearchForm from './layout/SearchForm';
 import MasterGrid from './layout/MasterGrid';
 import MasterGrid2 from './layout/MasterGrid2';
+import PopModal from "./layout/211_PopModal";
 import {
   Card,
 } from "@material-ui/core";
@@ -18,7 +19,6 @@ const WrapMaster = styled.section`
     padding-left: 2%;
     padding-right: 2%;
 `;
-
 
 const TopTitle = styled.section`
   text-align: center;
@@ -41,42 +41,19 @@ const RightTopContent = styled.section`
     padding-top: 2%;
 `;
 
-const BottomTitle = styled.section`
-  text-align: center;
-  height: 10%;
-  width: 100%;
-  padding-top: 2%;
-`;
-
 const LeftBottomContent = styled.section`
     float: left;
-    height: 40%;
+    height: 70%;
     width: 50%;
     margin-top: 7%;
 `;
 
 const RightBottomContent = styled.section`
     float: right;
-    height: 40%;
+    height: 70%;
     width: 50%;
     margin-top: 7%;
 `;
-
-const LeftBottomContent2 = styled.section`
-    float: left;
-    height: 40%;
-    width: 50%;
-    margin-top: 7%;
-`;
-
-const RightBottomContent2 = styled.section`
-    float: right;
-    height: 40%;
-    width: 50%;
-    margin-top: 7%;
-`;
-
-
   
 const EDU020E02 = () => {
 
@@ -88,9 +65,13 @@ const EDU020E02 = () => {
      const [byEmpEduCost, setbyEmpEduCost] = useState([]);
      const searchFormRef = useRef<any>(null);
 
-     const onMasterGridSelect = (value) => {
-      searchFormRef.current.changeData(value);
-    };
+     const onMasterGridSelect1 = (value) => {
+     };
+
+     const onMasterGridSelect2 = (value) => {
+      setSearchParam(value);
+      onAddData(); 
+     };
 
      const onRetrive = () => {
 
@@ -105,10 +86,12 @@ const EDU020E02 = () => {
           setbyDeptEduCost(response.data);
         });
 
+        // 전체 교육비 현황 그리드
         apiCall.retrieveGrid1(searchValue).then(response=>{
           setMastergridData(response.data);
         });
-
+        
+        // 부서별 교육비 현황 그리드
         apiCall.retrieveGrid2(searchValue).then(response=>{
           setMastergridData2(response.data);
           console.log(response.data);
@@ -131,35 +114,67 @@ const EDU020E02 = () => {
     };
 
     const onChangeEduYear = () => {
-      onRetrive();
+      //onRetrive();
     };
+
+
+    {/************************** Modal  ************************ */}
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const [detailRows, setDetailRows] = useState([]);
+    const [searchParam, setSearchParam] = useState({});
+
+    const onAddData = () => {
+      if (!isOpenModal) {
+        setIsOpenModal(true);
+      }
+    };
+  
+    const closeAddData = () => {
+      if (isOpenModal) {
+        setIsOpenModal(false);
+      }
+    };
+
+    const onModalDisplay_fromDept = ((el) => {
+      console.log("자식에서 호출 onModalDisplay_fromDept"+ JSON.stringify(el.data));
+      setSearchParam(el.data);
+      onAddData(); 
+    });
 
     return <>
       <Title onCleanup={onCleanup} useSave={false} onRetrive={onRetrive}></Title>
       <SearchForm ref={searchFormRef} onChangeEduYear={onChangeEduYear}></SearchForm>
       <WrapMaster>
+      
         {/********** 전체교육비(연도별) 교육비 현황 ***********/}
         <TopTitle>
-          <p style={{fontSize:'45px', fontWeight: '500', textDecoration: 'underline',textDecorationColor:'#2271B1', textUnderlinePosition: 'under'}}>전체 교육비 현황</p>
+          <p style={{fontSize:'40px', fontWeight: '600', textDecoration: 'underline',textDecorationColor:'#2271B1', textUnderlinePosition: 'under'}}>전체 교육비 현황</p>
         </TopTitle>
         <LeftTopContent>
           <ByYearEduCost data={byYearEduCost}></ByYearEduCost>
         </LeftTopContent>
         <RightTopContent>
-          <MasterGrid originRows={mastergridData} onSelectData={onMasterGridSelect} ref={masterGridRef}></MasterGrid>
+          <MasterGrid originRows={mastergridData} onSelectData={onMasterGridSelect1} ref={masterGridRef}></MasterGrid>
         </RightTopContent>
         {/*****************************************************/}
 
 
         {/********** 부서별 교육비 현황 ***********************/}
         <LeftBottomContent>
-          <ByDeptEduCost data={byDeptEduCost}></ByDeptEduCost>
+          <ByDeptEduCost data={byDeptEduCost} onModalDisplay={onModalDisplay_fromDept}></ByDeptEduCost>
         </LeftBottomContent>
         <RightBottomContent>
-          <MasterGrid2 originRows={mastergridData2} onSelectData={onMasterGridSelect} ref={masterGridRef2}></MasterGrid2>
+          <MasterGrid2 originRows={mastergridData2} onSelectData={onMasterGridSelect2} ref={masterGridRef2}></MasterGrid2>
         </RightBottomContent>
         {/*****************************************************/}
       </WrapMaster>
+      {isOpenModal && (
+        <PopModal
+          onModalClose={closeAddData}
+          detailRows={detailRows}
+          searchParam={searchParam}
+        ></PopModal>
+      )}
 
 
     </>

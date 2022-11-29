@@ -28,6 +28,7 @@ const ByYearEduCost = ({ data}: PropsType )  => {
                  * chart에 사용될 데이터
                  */
                  data={data}
+                 valueFormat=" >-,"
                 /**
                  * chart에 보여질 데이터 key (측정되는 값)
                  */

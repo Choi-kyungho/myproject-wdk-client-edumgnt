@@ -1,20 +1,69 @@
-import { DetailRow, DetailTitle, Field, Form, getDate, SFType, useForm } from '@vntgcorp/vntg-wdk-client';
-import React, { forwardRef, useEffect, useImperativeHandle } from 'react';
+import { DetailRow, DetailTitle, ESGrid, Field, Form, getDate, LEField, Modal, SFType, useForm } from '@vntgcorp/vntg-wdk-client';
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { ThemeConsumer } from 'styled-components';
 import { createSecureContext } from 'tls';
 import * as yup from 'yup';
+import { FileUploader, FileUploadType } from '@vntgcorp/vntg-wdk-client';
+import { UPLOADERSTAT } from '@vntgcorp/vntg-wdk-client/dist/app/src/components/molecules/FileUploader/FileUploader';
+import { GridRow } from '@vntgcorp/vntg-wdk-client';
+
+let masterGrid: ESGrid | any;
+import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Progress } from 'antd';
 
 type DetailFormProps = {
   onChangeData: (name: string, value: string) => void;
+  row: GridRow;
+  props: any;
 };
 
-type DetailFormForwardFunc = {
+export type DetailFormForwardFunc = {
   cleanup: () => void;
   submit: () => any;
   changeData: (any) => void;
+  getData: () => GridRow;
 };
 
-const DetailForm = React.forwardRef<DetailFormForwardFunc, DetailFormProps>(({ onChangeData }, ref) => {
+export const getGridValues = () => {
+  const updateRows = masterGrid.getCudRows();
+  return updateRows;
+};
+
+const DetailForm = React.forwardRef<DetailFormForwardFunc, DetailFormProps>(({ onChangeData, row, props }, ref) => {
+
+  console.log('Detail :::: ' + JSON.stringify(props.edu_rate));
+  const [edu_attach, setEduAttach] = useState<any>();
+  const [fileName, setFileName] = useState<string>('');
+
+  const [percent, setPercent] = useState<number>(0);
+
+  const increase = () => {
+    setPercent((prevPercent) => {
+      const newPercent = prevPercent + 1;
+      if (newPercent > 100) {
+        return 100;
+      }
+
+      form.setValue('edu_rate', newPercent);
+
+      return newPercent;
+    });
+  };
+
+  const decline = () => {
+    setPercent((prevPercent) => {
+      const newPercent = prevPercent - 1;
+      if (newPercent < 0) {
+        return 0;
+      }
+
+      form.setValue('edu_rate', newPercent);
+      onFieldChange('edu_rate', newPercent);
+
+      return newPercent;
+    });
+  };      
+
   React.useImperativeHandle(ref, () => ({
     cleanup() {
       // 초기화 함수
@@ -48,8 +97,52 @@ const DetailForm = React.forwardRef<DetailFormForwardFunc, DetailFormProps>(({ o
     setMaxEduScheduleNo(value) {
       form.setValue('edu_schedule_no', value.edu_schedule_no);
     },
+	// 첨부파일
+    getData() {
+      const values = form.getValues();
+      return { ...row, value: { ...edu_attach, ...values } };
+    },
   }));
 
+  useEffect(() => {
+    if (row === undefined || row === null) return;
+
+    setEduAttach(row.value);
+    setFileName(row.value.edu_file_name);
+
+    for (const [_, key] of Object.entries('edu_attach_id')) {
+      type oKey = keyof typeof row;
+      let value = row[key as oKey] as any;
+      let _key = key;
+
+      value = value ? value : null;
+
+      form.setValue(_key, value);
+    }
+  }, [row]);
+
+  useEffect(() => {
+    fileUploaderCallback('edu_attach_id', 0, props.edu_attach_id);
+    setPercent(props.edu_rate);
+  }, [props]);
+
+  // 첨부파일
+  useEffect(() => {
+    form.setValues(edu_attach);
+  }, [edu_attach]);
+
+  const fileUploaderCallback = (_colunmName: string, stat: UPLOADERSTAT, attachid: string) => {
+    if (stat === UPLOADERSTAT.NEWFILE) {
+      if (attachid) {
+        onChangeData(_colunmName, attachid);
+        form.setValue(_colunmName, attachid);
+      }
+    } else if (stat === UPLOADERSTAT.DELFILE) {
+      onChangeData(_colunmName, null);
+      form.setValue(_colunmName, '');
+    }
+  };
+  
   const checkOptions = [{ detail_code_id: 'Y', detail_code_name: '' }];
 
   const form = useForm({});
@@ -60,9 +153,23 @@ const DetailForm = React.forwardRef<DetailFormForwardFunc, DetailFormProps>(({ o
   const onElementChange = (e) => {
     e.stopPropagation();
     onFieldChange(e.target.name, e.target.value);
+    console.log('1 ::: ' + e.target.name);
+    console.log('2 ::: ' + e.target.value);
+
+    if(e.target.name == 'edu_rate'){
+      setPercent(e.target.value);
+    }
   };
 
   const onFieldChange = (name, value) => {
+    if (name == 'edu_cmplt_yn@@Y' && value) {
+      form.setValue('edu_rate', 100);
+      onChangeData('edu_rate', '100');
+    } else if (name == 'edu_rate' && value == 100) {
+      form.setValue('edu_cmplt_yn@@Y', 'Y');
+      onChangeData('edu_cmplt_yn@@Y', 'true');
+    }
+
     onChangeData(name, value);
   };
 
@@ -137,10 +244,11 @@ const DetailForm = React.forwardRef<DetailFormForwardFunc, DetailFormProps>(({ o
             <Field
               required
               label="교육명"
+              colspan={2}
               name={'edu_name'}
               type={SFType.Text}
               labelStyles={{ width: '200px' }}
-              styles={{ width: '250px' }}
+              styles={{ width: '400px' }}
               onChange={onElementChange}
             />
           </DetailRow>
@@ -250,26 +358,19 @@ const DetailForm = React.forwardRef<DetailFormForwardFunc, DetailFormProps>(({ o
               type={SFType.Checkbox}
               options={checkOptions}
             />
-            <Field
-              label="교육이행율(%)"
-              name={'edu_rate'}
-              type={SFType.Number}
-              labelStyles={{ width: '200px' }}
-              styles={{ width: '150px' }}
-              onChange={onElementChange}
-            />
+            
+          </DetailRow>   
+		  <DetailRow>
+            <LEField label="첨부">
+              <FileUploader
+                type={FileUploadType.INPUT}
+                styles={{ paddingBottom: '10px', width: 195 }}
+                attachID={form.getValues().edu_attach_id}
+                callBack={(stat, attachid) => fileUploaderCallback('edu_attach_id', stat, attachid)}
+                filename={fileName}
+              />
+            </LEField>
           </DetailRow>
-          {/* <DetailRow>
-            <Field
-              label="첨부"
-              name={'edu_attach_id'}
-              labelStyles={{ width: '200px' }}
-              styles={{ width: '300px' }}
-              onChange={onElementChange}
-              type={SFType.Text}
-              colspan={2}
-            />
-          </DetailRow> */}
           <DetailRow>
             <Field
               label="불참여부"
@@ -294,14 +395,33 @@ const DetailForm = React.forwardRef<DetailFormForwardFunc, DetailFormProps>(({ o
               label="비고"
               name={'rmk'}
               labelStyles={{ width: '200px' }}
-              styles={{ width: '250px' }}
+              styles={{ width: '400px' }}
               onChange={onElementChange}
               type={SFType.Text}
               colspan={2}
             />
           </DetailRow>
+          <DetailRow>
+            <Field
+                label="교육이행율(%)"
+                name={'edu_rate'}
+                type={SFType.Number}
+                labelStyles={{ width: '200px' }}
+                styles={{ width: '150px' }}
+                onChange={onElementChange}
+              />
+          </DetailRow>
         </DetailTitle>
       </Form>
+      
+      <div style={{padding: '30px 15px 0px 15px'}}>
+        <p style={{fontSize: '18px', fontWeight: '600'}}>교육이행율(%)</p>
+        <Progress percent={percent} />
+        <Button.Group>
+          <Button onClick={decline} icon={<MinusOutlined />} />
+          <Button onClick={increase} icon={<PlusOutlined />} />
+        </Button.Group>
+      </div>
     </React.Fragment>
   );
 });

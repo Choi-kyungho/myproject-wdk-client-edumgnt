@@ -1,5 +1,5 @@
-import { CodeService, IResData, Title, useSyncHttpCient, Notify } from '@vntgcorp/vntg-wdk-client';
-import React, { useRef, useState } from 'react';
+import { CodeService, IResData, Title, useSyncHttpCient, Notify, GridRow } from '@vntgcorp/vntg-wdk-client';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import ApiCall from './action/api';
 import DetailForm from './layout/DetailForm';
@@ -7,6 +7,9 @@ import MasterGrid from './layout/MasterGrid';
 import SearchForm from './layout/SearchForm';
 import { error, success, warning } from '@vntgcorp/vntg-wdk-client';
 import { ValidationError, ValidationLevel } from 'realgrid';
+import { useFileupload } from '@vntgcorp/vntg-wdk-client';
+import Template from './layout/Template';
+
 
 /* 
     화면 스타일 선언 */
@@ -15,18 +18,18 @@ import { ValidationError, ValidationLevel } from 'realgrid';
 // 원하는대로 커스텀 가능 EX) 좌측 마스터그리드, 우측 디테일그리드 2개
 
 // 좌측 높이(height)가 100%, 넓이가 50%인 영역을 좌측 정렬
-const LeftContent = styled.section`
-  float: left;
-  width: 50%;
-  height: 100%;
-`;
+// const LeftContent = styled.section`
+//   float: left;
+//   width: 50%;
+//   height: 100%;
+// `;
 
 // 우측: 높이(height)가 100%, 넓이가 50%인 영역을 우측 정렬
-const RightContent = styled.section`
-  float: right;
-  width: 50%;
-  height: 100%;
-`;
+// const RightContent = styled.section`
+//   float: right;
+//   width: 50%;
+//   height: 100%;
+// `;
 
 type Props = {};
 
@@ -82,6 +85,17 @@ const EDU010E01 = (props: Props) => {
   //   level: ValidationLevel.IGNORE,
   // };
 
+  // 첨부파일
+  const [edu_attach, setEduAttach] = useState<GridRow>();
+  const _fileuploader = useFileupload();
+
+  useEffect(() => {
+    onRetrive();
+
+    return () => {
+      _fileuploader.fileDataClear();
+    };
+  }, []);
   // 저장 함수
   const onSave = () => {
     const saveData = masterGridRef.current.save();
@@ -146,8 +160,38 @@ const EDU010E01 = (props: Props) => {
 
       // edu_cost 필수 체크
       const eduCost = saveData[0].edu_cost;
-      if (!eduCost) {
+
+      if (eduCost === undefined) {
         warning('[교육비] 필수 입력 사항입니다.');
+        return [];
+      }
+
+      const eduRate = saveData[0].edu_rate;
+      const eduCmpltYn = saveData[0].edu_cmplt_yn;
+
+      // edu_rate 교육이행률 100이상 입력 못하게
+      if (eduRate != undefined && eduRate > 100) {
+        warning('[교육이행률] 100%를 초과하여 입력할 수 없습니다.');
+        return [];
+      }
+
+      // 수료여부가 'Y' 인경우 교육이행률이 100인지 체크
+      if (eduCmpltYn == 'Y' && eduRate != 100) {
+        warning('[교육이행률] 수료인경우 교육이행률은 100을 입력해야 합니다.');
+        return [];
+      }
+
+      // 교육이행률이 100인 경우 수료여부 'Y'인지 체크
+      if (eduCmpltYn == 'N' && eduRate == 100) {
+        warning('[수료여부] 교육이행률이 100%인 경우 수료여부에 체크해야 합니다.');
+        return [];
+      }
+
+      //불참여부가 'Y' 인경우 불참사유 필수 입력
+      const eduAbsenceYn = saveData[0].edu_absence_yn;
+      const eduAbsenceReason = saveData[0].edu_absence_reason;
+      if (eduAbsenceYn == 'Y' && !eduAbsenceReason) {
+        warning('불참사유를 입력해주세요.');
         return [];
       }
 
@@ -157,15 +201,34 @@ const EDU010E01 = (props: Props) => {
         warning('교육일정이 마감되었습니다. 수정/삭제 불가능합니다.');
         return [];
       }
+		
+	  // 수료여부Y → 첨부파일 필수
+      const cmpltYn = saveData[0].edu_cmplt_yn;
+      if (cmpltYn === 'Y') {
+        const eduAttachId = saveData[0].edu_attach_id;
+        if (eduAttachId === null || eduAttachId === '') {
+          warning('수료여부가 Y일 경우, [첨부] 필수 입력 사항입니다.');
+          return [];
+        }
+      }
     } catch (err) {
       error(err);
     }
 
     // saveData는 api.ts에 있는 saveData 저장api함수
     // 저장 api함수 호출 후 조회함수 재호출
-    apiCall.saveData(saveData).then(() => {
-      Notify.update();
-      onRetrive();
+    apiCall.saveData(saveData).then((response) => {
+      if (response.success) {
+        Notify.update();
+        // 첨부파일 저장
+
+        console.log('saveData====>'+saveData);
+
+        if (saveData[0].row_stat !== 'deleted') _fileuploader.onSave();
+        onRetrive();
+      } else {
+        warning(response.message);
+      }
     });
   };
 
@@ -177,7 +240,7 @@ const EDU010E01 = (props: Props) => {
     apiCall.retrieve(searchValue).then((response) => {
       // 조회api 함수에서 받아온 데이터를 MasterGrid로 전달하기 위해 setMastergridData 훅에 담음
       setMastergridData(response.data);
-
+      alert(response.success);
       // 알림 메시지
       if (response.success) {
         Notify.retrive();
@@ -244,13 +307,20 @@ const EDU010E01 = (props: Props) => {
     masterGridRef.current.cleanup();
     SearchFormRef.current.cleanup();
     detailFormRef.current.cleanup();
+	// 첨부파일 초기화
+    setEduAttach(null);
+    _fileuploader.fileDataClear();
   };
+  
+  const [param, setParam] = useState({});
 
   // 마스터그리드를 선택했을 때 이벤트
   // 마스터그리드의 row를 선택하면 디테일그리드에 값이 세팅된다
   // onMasterGridSelect는 재정의할 필요없이 각 화면에 그대로 사용하면 된다
   const onMasterGridSelect = (value) => {
     detailFormRef.current.changeData(value);
+    //console.log('INDEX ::::: '+JSON.stringify(value));
+	  setParam(value);
   };
 
   // 디테일그리드에 데이터변화가 일어났을 때 이벤트
@@ -302,26 +372,21 @@ const EDU010E01 = (props: Props) => {
   return (
     <>
       {/* 저장화면에선 Title에 onSave(저장) onRetrive(조회) onCleanup(초기화) 필수*/}
-      <Title onSave={onSave} onRetrive={onRetrive} onCleanup={onCleanup}></Title>
 
-      {/*SearchForm에서 사용할 파라미터를 전달 (SearchFormRef)*/}
-      <SearchForm ref={SearchFormRef}></SearchForm>
-      <LeftContent>
-        {/* originRow ==> api에서 받아온 데이터를 파라미터로 넘겨줌 
-                    onSelectData ==> 마스터그리드를 클릭했을 때 이벤트를 지정 (각 화면마다 동일)
-                    ref ==> 마스터그리드에서 사용할 파라미터 
-                */}
-        <MasterGrid
-          originRows={mastergridData}
-          onSelectData={onMasterGridSelect}
-          onGetMaxEduSchedule={onGetMaxEduSchedule}
-          onGetEmpInfo={onGetEmpInfo}
-          ref={masterGridRef}
-        ></MasterGrid>
-      </LeftContent>
-      <RightContent>
-        <DetailForm ref={detailFormRef} onChangeData={onDetailDataChange}></DetailForm>
-      </RightContent>
+      <Template
+        title={<Title onSave={onSave} onRetrive={onRetrive} onCleanup={onCleanup}></Title>}
+        searchForm={<SearchForm ref={SearchFormRef}></SearchForm>}
+        leftContent={
+          <MasterGrid
+            originRows={mastergridData}
+            onSelectData={onMasterGridSelect}
+            onGetMaxEduSchedule={onGetMaxEduSchedule}
+            onGetEmpInfo={onGetEmpInfo}
+            ref={masterGridRef}
+          ></MasterGrid>
+        }
+        rightContent={<DetailForm ref={detailFormRef} onChangeData={onDetailDataChange} row={edu_attach} props={param}></DetailForm>}
+      ></Template>
     </>
   );
 };

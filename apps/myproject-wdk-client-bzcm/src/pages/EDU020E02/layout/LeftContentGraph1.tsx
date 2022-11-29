@@ -22,15 +22,17 @@ const LeftContentGraph1 = ({ data, onModalDisplay }: PropsType )  => {
 
     return (
         // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정
-        <div style={{ width: '800px', height: '350px', paddingTop: '40px'}}>
+        <div style={{ width: '100%', height: '100%', paddingTop: '5%'}}>
             <div style={{textAlign: 'center', paddingBottom: '30px'}}>
-                <p style={{fontSize: '35px', fontWeight: '600', paddingBottom: '30px'}}> 연도별교육현황</p>
+                <p style={{fontSize: '35px', fontWeight: '600', paddingBottom: '30px', textDecoration: 'underline',textDecorationColor:'#2271B1', textUnderlinePosition: 'under'}}> 연도별교육현황</p>
+                
             </div>
             <ResponsiveBar
                 /**
                  * chart에 사용될 데이터
                  */
                 data={data}
+                valueFormat=" >-,"
                 /**
                  * chart에 보여질 데이터 key (측정되는 값)
                  */
@@ -50,7 +52,8 @@ const LeftContentGraph1 = ({ data, onModalDisplay }: PropsType )  => {
                 /**
                  * chart 색상
                  */
-                colors={['#0066CC', '#0099CC' ]} // 커스터하여 사용할 때
+                //colors={['#0066CC', '#0099CC' ]} // 커스터하여 사용할 때
+                colors={['#0C2978', '#2056B5', '#4195FC', '#8CCAFE']} // 커스터하여 사용할 때
                 // colors={{ scheme: 'nivo' }} // nivo에서 제공해주는 색상 조합 사용할 때
                 /**
                  * color 적용 방식
@@ -84,7 +87,7 @@ const LeftContentGraph1 = ({ data, onModalDisplay }: PropsType )  => {
                          */
                         legend: {
                             text: {
-                                fontSize: 13,
+                                fontSize: 10,
                                 fill: '#000000',
                             },
                         },
@@ -93,7 +96,7 @@ const LeftContentGraph1 = ({ data, onModalDisplay }: PropsType )  => {
                          */
                         ticks: {
                             text: {
-                                fontSize: 12,
+                                fontSize: 10,
                                 fill: '#000000',
                             },
                         },

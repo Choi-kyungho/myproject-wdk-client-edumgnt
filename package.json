@@ -18,11 +18,13 @@
   },
   "version": "1.0.0",
   "dependencies": {
+    "@ant-design/icons": "^4.8.0",
     "@nivo/bar": "^0.80.0",
     "@nivo/core": "^0.80.0",
     "@nivo/marimekko": "^0.80.0",
     "@nivo/pie": "^0.80.0",
     "@nivo/stream": "^0.80.0",
+    "antd": "^5.0.2",
     "react-icons": "^4.4.0"
   }
 }

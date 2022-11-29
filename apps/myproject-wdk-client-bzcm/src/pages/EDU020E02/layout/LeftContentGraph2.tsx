@@ -27,16 +27,14 @@ const LeftContentGraph2 = ({ data, onModalDisplay }: PropsType )  => {
         // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정
         
 
-        <div style={{ width: '820px', height: '450px', paddingTop: '100px'}}>
-            <div style={{textAlign: 'center'}}>
-                {/* <p style={{fontSize: '30px', fontWeight: '600'}}> 연도별교육현황</p> */}
-            </div>
+        <div style={{ width: '100%', height: '100%'}}>
             <ResponsiveBar
                 layout='horizontal'
                 /**
                  * chart에 사용될 데이터
                  */
                 data={data}
+                valueFormat=" >-,"
                 /**
                  * chart에 보여질 데이터 key (측정되는 값)
                  */  
@@ -56,7 +54,7 @@ const LeftContentGraph2 = ({ data, onModalDisplay }: PropsType )  => {
                 /**
                  * chart 색상
                  */   
-                colors={['#28B0CB']} // 커스터하여 사용할 때
+                colors={['#FFF4DA', '#FFD590', '#FFA947', '#B76423']} // 커스터하여 사용할 때
                 
                 // colors={{ scheme: 'nivo' }} // nivo에서 제공해주는 색상 조합 사용할 때
                 /**

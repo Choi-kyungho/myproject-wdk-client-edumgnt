@@ -17,7 +17,6 @@ import {
   Typography,
 } from "@material-ui/core";
 
-
 type PropsType ={
   data:any
 }
@@ -32,8 +31,14 @@ const EduList1to5=({ data }: PropsType )=>{
     <div className="eduNameList">
       {eduData && eduData.map((eduData) =>(
         <>  
-          <Card style={{width:'30%', float:'left', marginLeft: '35px', height:'250px'
-             ,boxShadow: '5px 5px 1px -1px rgb(0 0 0 / 20%), 1px 1px 0px 2px rgb(0 0 0 / 14%), 1px 1px 3px 0px rgb(0 0 0 / 12%)'}}>
+          <Card style={
+            eduData.seq == 1 ? {width:'30%', float:'left',height:'250px'
+            ,boxShadow: '5px 5px 1px -1px rgb(0 0 0 / 20%), 1px 1px 0px 2px rgb(0 0 0 / 14%), 1px 1px 3px 0px rgb(0 0 0 / 12%)'}
+            : eduData.seq == 2 ?
+            {width:'30%', float:'left',height:'250px', marginLeft: '5%'
+             ,boxShadow: '5px 5px 1px -1px rgb(0 0 0 / 20%), 1px 1px 0px 2px rgb(0 0 0 / 14%), 1px 1px 3px 0px rgb(0 0 0 / 12%)'}
+            :{width:'30%', float:'left',height:'250px', marginLeft: '5%'
+            ,boxShadow: '5px 5px 1px -1px rgb(0 0 0 / 20%), 1px 1px 0px 2px rgb(0 0 0 / 14%), 1px 1px 3px 0px rgb(0 0 0 / 12%)'} }>
             <div style={{paddingLeft: '15px', paddingTop: '20px'}}>
               <p style={{fontSize:'25px', float:'left', paddingTop:'8px'}}>
                 <div style={eduData.seq == 1 ? {color:'gold', float:'left'} 
@@ -43,13 +48,13 @@ const EduList1to5=({ data }: PropsType )=>{
                 <div style={{float: 'left'}}><b style={{marginLeft:'5px'}}>{eduData.seq}위</b></div>
               </p>
             </div>
-            <div style={{fontSize:'14px', paddingTop:'45px', color:'#464646', textAlign:'center', fontWeight:'600', height:'100px'}}>
+            <div style={{fontSize:'18px', paddingTop:'45px', color:'#464646', textAlign:'center', fontWeight:'600', height:'100px'}}>
               {eduData.eduName}
             </div>
-            <div style={{float: 'left', marginTop:'10px', textAlign:'left', paddingLeft:'15px'}}>
+            <div style={{float: 'left', paddingBottom: '10%', paddingLeft: '30%'}}>
               <AiOutlineUser></AiOutlineUser> &nbsp; {eduData.eduAuthor}<br/> 
             </div>
-            <div style={{marginTop:'40px', textAlign:'left', paddingLeft:'15px', marginBottom:'10px'}}>
+            <div style={{float: 'right', paddingBottom: '10%', paddingRight: '30%'}}>
               <GiMoneyStack></GiMoneyStack> &nbsp; {eduData.eduCost}<br/>
             </div>
             <div style={{textAlign:'center', marginTop:'0px'}}>

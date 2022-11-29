@@ -61,7 +61,10 @@ export const GridConfig = [
     dataType: ValueType.TEXT,
     visible: true,
     headerText: '교육명',
-    width: 130,
+    width: 300,
+    footer: {
+      text: '합계 =>',
+    },
   },
   {
     fieldName: 'edu_from_dt',
@@ -87,6 +90,11 @@ export const GridConfig = [
     width: 70,
     numberFormat: '#,##0',
     textAlignment: GRIDSTYLETYPE.TEXTRIGHT,
+    footerFormat: '#,##0',
+    footer: {
+      expression: 'sum',
+      numberFormat: '#,##0',
+    },
   },
   {
     fieldName: 'edu_type',
@@ -159,6 +167,11 @@ export const GridConfig = [
     width: 80,
     numberFormat: '#,##0',
     textAlignment: GRIDSTYLETYPE.TEXTRIGHT,
+    footerFormat: '#,##0',
+    footer: {
+      expression: 'sum',
+      numberFormat: '#,##0',
+    },
   },
   {
     fieldName: 'edu_rate',
@@ -200,8 +213,8 @@ export const GridConfig = [
   {
     fieldName: 'edu_attach_id',
     dataType: ValueType.TEXT,
-    visible: false,
-    headerText: '첨부',
+    visible: true,
+    headerText: '첨부ID',
     width: 150,
   },
   {
@@ -235,5 +248,12 @@ export const GridConfig = [
     fieldName: 'row_stat',
     dataType: ValueType.TEXT,
     visible: false,
+  },
+  {
+    fieldName: 'edu_file_name',
+    dataType: ValueType.TEXT,
+    visible: true,
+    headerText: '첨부파일명',
+    width: 250,
   },
 ];

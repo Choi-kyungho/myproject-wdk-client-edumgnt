@@ -21,6 +21,13 @@ export const GridConfig = [
     width: 180,
   },
   {
+    fieldName: 'dept_code',
+    dataType: ValueType.TEXT,
+    visible: false,
+    headerText: '부서코드',
+    width: 180,
+  },
+  {
     fieldName: 'bugt_amt',
     dataType: ValueType.TEXT,
     visible: true,

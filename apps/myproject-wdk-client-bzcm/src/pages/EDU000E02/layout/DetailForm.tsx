@@ -20,6 +20,7 @@ const DetailForm = React.forwardRef<DetailFormForwardFunc, DetailFormProps>(({ o
     cleanup() {
       // 초기화 함수
       form.reset();
+      // 사용여부 체크박스 초기화
       form.setValue('use_yn@@Y', null);
     },
     submit() {
@@ -71,6 +72,7 @@ const DetailForm = React.forwardRef<DetailFormForwardFunc, DetailFormProps>(({ o
               labelStyles={{ width: '200px' }}
               onChange={onElementChange}
               type={SFType.Text}
+              required={true}
             />
             <Field
               label="사원번호"
@@ -78,6 +80,7 @@ const DetailForm = React.forwardRef<DetailFormForwardFunc, DetailFormProps>(({ o
               labelStyles={{ width: '200px' }}
               onChange={onElementChange}
               type={SFType.Text}
+              placeholder="숫자 8자리"
               required={true}
             />
           </DetailRow>
@@ -88,12 +91,15 @@ const DetailForm = React.forwardRef<DetailFormForwardFunc, DetailFormProps>(({ o
               labelStyles={{ width: '200px' }}
               onChange={onElementChange}
               type={SFType.Text}
+              placeholder="홍길동"
+              required={true}
             />
             <Field
               label="전화번호"
               name={'phon_number'}
               labelStyles={{ width: '200px' }}
               onChange={onElementChange}
+              placeholder="000-0000-0000"
               type={SFType.Text}
             />
           </DetailRow>
@@ -107,6 +113,7 @@ const DetailForm = React.forwardRef<DetailFormForwardFunc, DetailFormProps>(({ o
               code={'CM10'}
               styles={{ width: '200px' }}
               colspan={3}
+              required={true}
             />
           </DetailRow>
           <DetailRow>
@@ -117,6 +124,7 @@ const DetailForm = React.forwardRef<DetailFormForwardFunc, DetailFormProps>(({ o
               onChange={onFieldChange}
               type={SFType.Selectbox}
               code={'CM31'}
+              required={true}
             />
           </DetailRow>
           <DetailRow>
@@ -127,6 +135,7 @@ const DetailForm = React.forwardRef<DetailFormForwardFunc, DetailFormProps>(({ o
               onChange={onFieldChange}
               type={SFType.Selectbox}
               code={'CM27'}
+              required={true}
             />
           </DetailRow>
           <DetailRow>
@@ -138,6 +147,8 @@ const DetailForm = React.forwardRef<DetailFormForwardFunc, DetailFormProps>(({ o
               type={SFType.Text}
               styles={{ width: '200px' }}
               colspan={3}
+              placeholder="xxxxx@vntgcorp.com"
+              required={true}
             />
           </DetailRow>
           <DetailRow>

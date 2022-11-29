@@ -7,6 +7,7 @@ import { getUniqueValue } from '@vntgcorp/vntg-wdk-client';
 type MasterGridProps = {
   originRows: Array<any>;
   onSelectData: (value) => void;
+  onSelectRow: (value) => void;
   /**  */
 };
 
@@ -23,7 +24,7 @@ type GridForwardFunc = {
   changeData: (name: string, value: string) => void;
 };
 
-const MasterGrid = React.forwardRef<GridForwardFunc, MasterGridProps>(({ originRows, onSelectData }, ref) => {
+const MasterGrid = React.forwardRef<GridForwardFunc, MasterGridProps>(({ originRows, onSelectData, onSelectRow }, ref) => {
   /**
    * Ref. 를 통한 이벤트 전달함수
    */
@@ -65,8 +66,7 @@ const MasterGrid = React.forwardRef<GridForwardFunc, MasterGridProps>(({ originR
     masterGrid.current.setLookup('dept_code', 'CM10');
 
     masterGrid.current.onCurrentRowChanged((row) => {
-      setSelectedRowIndex(row._row.index);
-      onSelectData(row.value);
+      onSelectRow(row.value);
     });
 
     return () => {

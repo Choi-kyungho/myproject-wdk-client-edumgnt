@@ -4,14 +4,15 @@ import { FcBarChart } from "react-icons/fc";
 
 type PropsType ={
     data:any,
+    onModalDisplay:(el) => void
 }
 
 // 연도별 교육현황
-const ByDeptEduCost = ({ data}: PropsType )  => {
+const ByDeptEduCost = ({ data, onModalDisplay}: PropsType )  => {
     const handle = {
         barClick: (data: any) => {
             console.log(data);
-            //onModalDisplay(data);
+            onModalDisplay(data);
         },
 
         legendClick: (data: any) => {
@@ -27,6 +28,7 @@ const ByDeptEduCost = ({ data}: PropsType )  => {
                  * chart에 사용될 데이터
                  */
                  data={data}
+                 valueFormat=" >-,"
                 layout="horizontal"
                 /**
                  * chart에 보여질 데이터 key (측정되는 값)

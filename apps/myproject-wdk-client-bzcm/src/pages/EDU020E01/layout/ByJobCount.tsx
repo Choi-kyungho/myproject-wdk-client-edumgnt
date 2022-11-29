@@ -29,12 +29,13 @@ const ByJobCount = ({data, onModalDisplay}: PropsType) => {
             <div style={{paddingLeft: '347px', position: 'absolute', paddingTop: '190px', color:'#53C62F'}}>
                 <GrUserWorker style={{width:'50px', height:'50px', color:'#53C62F'}}></GrUserWorker>
             </div>
-            <div style={{ textAlign: 'center'}}><p style={{fontSize:'33px', fontWeight:'600', paddingBottom: '20px'}}>직무별 인원구성</p></div>
+            <div style={{ textAlign: 'center'}}><p style={{fontSize:'28px', fontWeight:'600', paddingBottom: '20px'}}>직무별 인원구성</p></div>
             <ResponsivePie
                 /**
                  * chart에 사용될 데이터
                  */
                 data={graphData}
+                
                 activeOuterRadiusOffset={8}
                 /**
                  * chart margin
@@ -47,7 +48,7 @@ const ByJobCount = ({data, onModalDisplay}: PropsType) => {
                 /**
                  * pad 간격
                  */
-                padAngle={1.8}
+                padAngle={3}
                 /**
                  * pad radius 설정 (pad별 간격이 있을 시 보임)
                  */
@@ -76,7 +77,7 @@ const ByJobCount = ({data, onModalDisplay}: PropsType) => {
                 /**
                  * link label 연결되는 선 색상
                  */
-                arcLinkLabelsColor={{ from: 'color' }} // pad 색상에 따라감
+                arcLinkLabelsColor={'#579F0F'} // pad 색상에 따라감
                 /**
                  * label (pad에 표현되는 글씨) skip할 기준 각도
                  */
@@ -87,7 +88,7 @@ const ByJobCount = ({data, onModalDisplay}: PropsType) => {
                      */
                     labels: {
                         text: {
-                            fontSize: 14,
+                            fontSize: 12,
                             fill: '#FFFFFF',
                             textShadow: '1px 1px 1px #000'
                         },
@@ -117,7 +118,7 @@ const ByJobCount = ({data, onModalDisplay}: PropsType) => {
                         translateX: 0, // chart와 X 간격
                         translateY: 56, // chart와 Y 간격
                         itemsSpacing: 0, // item간 간격
-                        itemWidth: 100, // item width
+                        itemWidth: 90, // item width
                         itemHeight: 18, // item height
                         itemDirection: 'left-to-right', // item 내부에 그려지는 방향
                         itemOpacity: 1, // item opacity

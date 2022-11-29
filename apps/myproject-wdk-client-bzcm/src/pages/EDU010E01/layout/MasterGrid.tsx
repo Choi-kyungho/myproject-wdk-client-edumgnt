@@ -40,6 +40,7 @@ const MasterGrid = React.forwardRef<GridForwardFunc, MasterGridProps>(
       },
       changeData(name, value) {
         if (selectedRowIndex != null) {
+		  if (name === 'edu_attach_id') name = 'edu_attach_id';
           if (name == 'edu_cmplt_yn@@Y' || name == 'edu_absence_yn@@Y') {
             const inputData = name.split('@@');
 
@@ -60,10 +61,12 @@ const MasterGrid = React.forwardRef<GridForwardFunc, MasterGridProps>(
 
     React.useEffect(() => {
       masterGrid.current = new ESGrid('EDU010E01GRID');
+
       masterGrid.current.initializeGrid(GridConfig, originRows);
       // masterGrid.current.setBoolColumn('edu_cmplt_yn', 'N', false);
       // masterGrid.current.setBoolColumn('edu_absence_yn', 'N', false);
-
+      masterGrid.current.setFooter();
+      masterGrid.current.setFooterSummary('sum', ['edu_cost', 'edu_time', 'edu_name']);
       masterGrid.current.setRows(originRows);
 
       masterGrid.current.onCurrentRowChanged((row) => {
@@ -118,6 +121,7 @@ const MasterGrid = React.forwardRef<GridForwardFunc, MasterGridProps>(
             dept_code: null,
             edu_cost: null,
             close_yn: 'N',
+			edu_file_name: null,
           });
           break;
         }

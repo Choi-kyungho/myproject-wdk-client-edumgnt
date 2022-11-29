@@ -1,6 +1,7 @@
 import { CodeService, IResData, Notify, Title, useSyncHttpCient } from '@vntgcorp/vntg-wdk-client';
 import { find, findIndex, findKey, findLastIndex, indexOf, sortedIndex } from 'lodash';
 import React, { useRef, useState } from 'react';
+import { GiTrophyCup } from 'react-icons/gi';
 import { cursorTo } from 'readline';
 import { DefaultValue, selector } from 'recoil';
 import styled from 'styled-components';
@@ -8,6 +9,7 @@ import ApiCall from './action/api';
 import DetailForm from './layout/DetailForm';
 import MasterGrid from './layout/MasterGrid';
 import SearchForm from './layout/SearchForm';
+import { error, success, warning } from '@vntgcorp/vntg-wdk-client';
 
 /* 
     화면 스타일 선언 */
@@ -81,6 +83,60 @@ const EDU000E02 = (props: Props) => {
   // 저장 함수
   const onSave = () => {
     const saveData = masterGridRef.current.save();
+
+    // 유효성 체크
+    try {
+      // user_id 필수 체크
+      const userId = saveData[0].user_id;
+      if (!userId) {
+        warning('[ID] 필수 입력 사항입니다.');
+        return [];
+      }
+
+      // emp_no 필수 체크
+      const empNo = saveData[0].emp_no;
+      if (!empNo) {
+        warning('[사원번호] 필수 입력 사항입니다.');
+        return [];
+      }
+
+      // emp_name 필수 체크
+      const empName = saveData[0].emp_name;
+      if (!empName) {
+        warning('[성명] 필수 입력 사항입니다.');
+        return [];
+      }
+
+      // dept_code 필수 체크
+      const deptCode = saveData[0].dept_code;
+      if (!deptCode) {
+        warning('[부서코드] 필수 입력 사항입니다.');
+        return [];
+      }
+
+      // job 필수 체크
+      const job = saveData[0].job;
+      if (!job) {
+        warning('[직무] 필수 입력 사항입니다.');
+        return [];
+      }
+
+      // responsi 필수 체크
+      const responsi = saveData[0].responsi;
+      if (!responsi) {
+        warning('[직책] 필수 입력 사항입니다.');
+        return [];
+      }
+
+      // email 필수 체크
+      const email = saveData[0].email;
+      if (!email) {
+        warning('[이메일] 필수 입력 사항입니다.');
+        return [];
+      }
+    } catch (err) {
+      error(err);
+    }
 
     // saveData는 api.ts에 있는 saveData 저장api함수
     // 저장 api함수 호출 후 조회함수 재호출

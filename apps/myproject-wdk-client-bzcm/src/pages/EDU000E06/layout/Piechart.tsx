@@ -1,55 +1,49 @@
-import {
-    ESGrid,
-    getDate,
-    GridHdBtnType,
-    GridHeader,
-    Retrive,
-    userInfoGlobalState,
-    Button
-  } from "@vntgcorp/vntg-wdk-client";
-  import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ResponsivePie } from '@nivo/pie';
-import { MdGroups } from "react-icons/md";
-
-import Index from '../index';
 
 type PropsType ={
-    data:any,
-    onModalDisplay:(el) => void
+    data:any
 }
 
-const TotalCount = ({ data, onModalDisplay }: PropsType) => {
+const Piechart = ({ data}: PropsType) => {
+
     const [graphData,setDataTemp]= React.useState<any>(data); 
-    
+    console.log(JSON.stringify(data));
     useEffect(()=>{
         setDataTemp(data)
     },[data])
 
     const handle = {
         padClick: (data: any) => {
-            //alert(JSON.stringify(data));
-            onModalDisplay(data);
+            console.log(data);
         },
 
         legendClick: (data: any) => {
             console.log(data);
         },
     };
+
+
+
     return (
-        
         // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정
-        <div style={{ width: '100%', height: '100%', margin: '0 auto', paddingTop: '2.5%', position:'relative' }}>
-            <div style={{textAlign: 'center', paddingTop:'9.2%', paddingLeft:'47.6%', position:'absolute'}}><MdGroups style={{width:'80px', height:'80px', color:'#0C2978'}}></MdGroups></div>
-            <div style={{ textAlign: 'center'}}><p style={{fontSize:'30px', fontWeight:'600', marginBottom:'0.5%'}}>총 인원구성</p></div>
-            <ResponsivePie
+        <div style={{ width: '100%', height: '80%', margin: '0 auto' }}>
+            <p style={{marginTop:'5%', textAlign: 'center', fontSize: '35px', fontWeight: '600', textDecoration: 'underline',textDecorationColor:'#2271B1', textUnderlinePosition: 'under'}}> 교육예산현황</p>
+            <ResponsivePie   
                 /**
                  * chart에 사용될 데이터
                  */
                 data={graphData}
-                activeOuterRadiusOffset={8}
+                valueFormat=" >-,"
+                // data={[
+                //     { id: 'cola', value: 3200 },
+                //     { id: 'cidar', value: 88 },
+                //     { id: 'fanta', value: 221 },
+                // ]}
                 /**
                  * chart margin
                  */
+
                 margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
                 /**
                  * chart 중간 빈공간 반지름
@@ -58,7 +52,7 @@ const TotalCount = ({ data, onModalDisplay }: PropsType) => {
                 /**
                  * pad 간격
                  */
-                padAngle={3}
+                padAngle={1.8}
                 /**
                  * pad radius 설정 (pad별 간격이 있을 시 보임)
                  */
@@ -66,31 +60,28 @@ const TotalCount = ({ data, onModalDisplay }: PropsType) => {
                 /**
                  * chart 색상
                  */
-                colors={['#0C2978', '#2056B5', '#4195FC', '#8CCAFE', '#D9F0FE' ]} // 커스터하여 사용할 때
-                //colors={{ scheme: 'nivo' }} // nivo에서 제공해주는 색상 조합 사용할 때
+                colors={['#0C2978', '#4195FC', ]} // 커스터하여 사용할 때
+                // colors={{ scheme: 'nivo' }} // nivo에서 제공해주는 색상 조합 사용할 때
                 /**
                  * pad border 두께 설정
                  */
-                borderWidth={1}
-                sortByValue={true}
+                borderWidth={2}
                 /**
                  * link label skip할 기준 각도
                  */
                 arcLinkLabelsSkipAngle={0}
-
                 /**
-                 * 
                  * link label 색상
                  */
                 arcLinkLabelsTextColor="#000000"
                 /**
                  * link label 연결되는 선 두께
                  */
-                arcLinkLabelsThickness={1}
+                arcLinkLabelsThickness={2}
                 /**
                  * link label 연결되는 선 색상
                  */
-                arcLinkLabelsColor={ '#1987B7'} // pad 색상에 따라감
+                arcLinkLabelsColor={{ from: 'color' }} // pad 색상에 따라감
                 /**
                  * label (pad에 표현되는 글씨) skip할 기준 각도
                  */
@@ -99,7 +90,7 @@ const TotalCount = ({ data, onModalDisplay }: PropsType) => {
                     /**
                      * label style (pad에 표현되는 글씨)
                      */
-                    labels: {
+                     labels: {
                         text: {
                             fontSize: 12,
                             fill: '#FFFFFF',
@@ -119,8 +110,8 @@ const TotalCount = ({ data, onModalDisplay }: PropsType) => {
                 /**
                  * pad 클릭 이벤트
                  */
+                
                 onClick={handle.padClick}
-                //onClick={()=>onModalDisplay(data)}
                 /**
                  * legend 설정 (default로 하단에 있는 색상별 key 표시)
                  */
@@ -131,7 +122,7 @@ const TotalCount = ({ data, onModalDisplay }: PropsType) => {
                         justify: false, // 글씨, 색상간 간격 justify 적용 여부
                         translateX: 0, // chart와 X 간격
                         translateY: 56, // chart와 Y 간격
-                        itemsSpacing: 10, // item간 간격
+                        itemsSpacing: 0, // item간 간격
                         itemWidth: 100, // item width
                         itemHeight: 18, // item height
                         itemDirection: 'left-to-right', // item 내부에 그려지는 방향
@@ -144,7 +135,6 @@ const TotalCount = ({ data, onModalDisplay }: PropsType) => {
                                 on: 'hover',
                                 style: {
                                     itemTextColor: 'olive',
-
                                 },
                             },
                         ],
@@ -156,4 +146,4 @@ const TotalCount = ({ data, onModalDisplay }: PropsType) => {
     );
 };
 
-export default TotalCount;
+export default Piechart;

@@ -48,7 +48,7 @@ const SearchForm = React.forwardRef<SearchFormForwardFunc, SearchFormProps>(({},
 
   return (
     <React.Fragment>
-      <Form {...form} formType="search" formName="EDU000E05-굥규 기관 등록">
+      <Form {...form} formType="search" formName="EDU000E05-교육 기관 등록">
         <SearchRow>
           <Field
             type={SFType.Text}

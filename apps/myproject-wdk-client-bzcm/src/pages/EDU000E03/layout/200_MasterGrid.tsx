@@ -1,8 +1,15 @@
-import { ESGrid, getDate, GridHdBtnType, GridHeader, userInfoGlobalState } from '@vntgcorp/vntg-wdk-client';
+import {
+  ESGrid,
+  Field,
+  getDate,
+  GridHdBtnType,
+  GridHeader,
+  SFType,
+  userInfoGlobalState,
+} from '@vntgcorp/vntg-wdk-client';
 import React, { useEffect, useState } from 'react';
-import { GridConfig } from './MasterGrid2_Config';
+import { GridConfig } from './200_MasterGridConfig';
 import { v4 as uuid } from 'uuid';
-
 type MasterGridProps = {
   originRows: Array<any>;
   onSelectData: (value) => void;
@@ -36,17 +43,18 @@ const MasterGrid = React.forwardRef<GridForwardFunc, MasterGridProps>(({ originR
   const [selectedRowIndex, setSelectedRowIndex] = useState<number>(null);
 
   React.useEffect(() => {
-    masterGrid.current = new ESGrid('EDU000E02GRID2');
+    masterGrid.current = new ESGrid('EDU000E03GRID');
     masterGrid.current.initializeGrid(GridConfig, originRows);
     masterGrid.current.setBoolColumn('use_yn', 'Y', true);
+
+    masterGrid.current.setLookup('parent_dept_code', 'CM10');
+
     masterGrid.current.setRows(originRows);
 
     masterGrid.current.onCurrentRowChanged((row) => {
       setSelectedRowIndex(row._row.index);
       onSelectData(row.value);
     });
-
-  
 
     return () => {
       masterGrid.current.destroy();
@@ -63,9 +71,12 @@ const MasterGrid = React.forwardRef<GridForwardFunc, MasterGridProps>(({ originR
     switch (type) {
       case GridHdBtnType.plus: {
         masterGrid.current.insertRow({
-          edu_year: null,
-          cls: '',
-          edu_cost: '',
+          dept_code: '',
+          dept_name: '',
+          use_yn: 'Y',
+          valid_start_date: getDate(new Date().toString()),
+          valid_end_date: '9999-12-31',
+          parent_dept_code: '0001',
         });
         break;
       }
@@ -86,8 +97,8 @@ const MasterGrid = React.forwardRef<GridForwardFunc, MasterGridProps>(({ originR
   };
   return (
     <div className="grid">
-      <GridHeader title={'부서별교육비현황'} type="default"/>
-      <div className="realGrid" id="EDU000E02GRID2"></div>
+      <GridHeader title={'부서 목록'} type="default" gridBtnEvent={gridBtnEvent} />
+      <div className="realGrid" id="EDU000E03GRID"></div>
     </div>
   );
 });

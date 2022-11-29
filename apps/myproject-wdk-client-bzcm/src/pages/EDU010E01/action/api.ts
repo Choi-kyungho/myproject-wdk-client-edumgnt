@@ -22,8 +22,13 @@ export default class ApiCall {
       params: {
         // API에서 사용할 조회파라미터 설정
         p_edu_year: searchValue.EDU_YEAR,
+        p_dept_code: searchValue.DEPT_CODE,
+        p_emp_name: searchValue.EMP_NAME,
+        p_edu_large_class: searchValue.EDU_LARGE_CLASS,
+        p_edu_middle_class: searchValue.EDU_MIDDLE_CLASS,
+        p_edu_supervision: searchValue.EDU_SUPERVISION,
         p_edu_name: searchValue.EDU_NAME,
-        p_emp_no: searchValue.EMP_NAME,
+        p_edu_cmplt_yn: searchValue.EDU_CMPLT_YN,
       },
     };
     return this.httpRequest(config);
