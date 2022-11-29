@@ -213,7 +213,7 @@ export const GridConfig = [
   {
     fieldName: 'edu_attach_id',
     dataType: ValueType.TEXT,
-    visible: true,
+    visible: false,
     headerText: '첨부ID',
     width: 150,
   },
